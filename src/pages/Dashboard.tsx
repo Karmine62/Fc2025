@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Camera, ShoppingBag, Plus, Heart, Search, Bot, Download, QrCode, Store, Trash, Eye, Share, CreditCard, User, Palette, Sparkles, Zap, Upload } from "lucide-react";
+import { Camera, ShoppingBag, Plus, Heart, Search, Bot, Download, QrCode, Store, Trash, Eye, Share, CreditCard, User, Palette, Sparkles, Zap } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -185,11 +185,8 @@ const Dashboard = () => {
                   Edit Profile
                 </Button>
                 <Button className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white border-0 rounded-xl px-8">
-                  <Upload className="w-4 h-4 mr-2" />
-                  Upload
-                </Button>
-                <Button variant="outline" size="icon" className="border-gray-300 rounded-xl w-10 h-10 relative z-10">
-                  <Share className="w-4 h-4" />
+                  <Share className="w-4 h-4 mr-2" />
+                  Share
                 </Button>
               </div>
               
