@@ -1,5 +1,6 @@
+
 import { useState } from "react";
-import { Camera, ShoppingBag, Image, User, Plus, Heart, Search, Settings, Grid3X3, Film, Users, Download, QrCode } from "lucide-react";
+import { Camera, ShoppingBag, Image, User, Plus, Heart, Search, Settings, Grid3X3, Users, Download, QrCode } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -48,41 +49,31 @@ const Dashboard = () => {
             />
           </div>
 
-          {/* Navigation */}
-          <nav className="space-y-2">
-            <a href="#" className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-800 transition-colors">
-              <Camera className="w-6 h-6" />
-              <span>Generate</span>
-            </a>
-            <a href="#" className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-800 transition-colors">
-              <ShoppingBag className="w-6 h-6" />
-              <span>Store</span>
-            </a>
-            <a href="#" className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-800 transition-colors">
-              <Heart className="w-6 h-6" />
-              <span>Favorites</span>
-            </a>
-            <a href="#" className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-800 transition-colors">
-              <User className="w-6 h-6" />
-              <span>Profile</span>
-            </a>
-            <a href="#" className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-800 transition-colors">
-              <Settings className="w-6 h-6" />
-              <span>Settings</span>
-            </a>
-          </nav>
-
           {/* Credits Display */}
-          <div className="mt-8 p-4 bg-gray-800 rounded-lg">
+          <div className="mb-6 p-4 bg-gray-800 rounded-lg">
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm text-gray-400">Credits</span>
               <Badge className="bg-blue-600 hover:bg-blue-700">{userStats.credits}</Badge>
             </div>
-            <Button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
-              <Plus className="w-4 h-4 mr-2" />
-              Buy Credits
-            </Button>
           </div>
+
+          {/* Get Credits Button */}
+          <Button className="w-full mb-6 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
+            <Plus className="w-4 h-4 mr-2" />
+            Get Credits
+          </Button>
+
+          {/* Settings */}
+          <Button variant="outline" className="w-full mb-4 border-gray-600 text-white hover:bg-gray-800">
+            <Settings className="w-4 h-4 mr-2" />
+            Settings
+          </Button>
+
+          {/* Store */}
+          <Button variant="outline" className="w-full border-gray-600 text-white hover:bg-gray-800">
+            <ShoppingBag className="w-4 h-4 mr-2" />
+            Store
+          </Button>
         </div>
       </div>
 
@@ -124,93 +115,10 @@ const Dashboard = () => {
               
               <div>
                 <h2 className="font-semibold">AI Selfie Studio</h2>
-                <p className="text-gray-400">Create stunning AI-generated selfies</p>
                 <p className="text-gray-400">✨ {userStats.planType} member</p>
               </div>
             </div>
           </div>
-
-          {/* Generator Section */}
-          <Card className="bg-gray-800 border-gray-700 p-6 mb-8">
-            <h3 className="text-lg font-semibold mb-4">Create New Selfie</h3>
-            
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">Upload Method</label>
-                  <div className="flex space-x-4 mb-4">
-                    <Button
-                      variant={uploadMethod === 'manual' ? 'default' : 'outline'}
-                      onClick={() => setUploadMethod('manual')}
-                      className={uploadMethod === 'manual' ? 'bg-blue-600 hover:bg-blue-700' : 'border-gray-600 text-white hover:bg-gray-700'}
-                    >
-                      <Camera className="w-4 h-4 mr-2" />
-                      Manual Upload
-                    </Button>
-                    <Button
-                      variant={uploadMethod === 'qr' ? 'default' : 'outline'}
-                      onClick={() => setUploadMethod('qr')}
-                      className={uploadMethod === 'qr' ? 'bg-blue-600 hover:bg-blue-700' : 'border-gray-600 text-white hover:bg-gray-700'}
-                    >
-                      <QrCode className="w-4 h-4 mr-2" />
-                      QR Code
-                    </Button>
-                  </div>
-                </div>
-
-                {uploadMethod === 'manual' ? (
-                  <div className="border-2 border-dashed border-gray-600 rounded-lg p-8 text-center hover:border-gray-500 transition-colors cursor-pointer">
-                    <Camera className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                    <p className="text-white font-medium">Click to upload or drag and drop</p>
-                    <p className="text-gray-400 text-sm mt-1">PNG, JPG up to 10MB</p>
-                  </div>
-                ) : (
-                  <div className="border-2 border-gray-600 rounded-lg p-8 text-center">
-                    <div className="w-32 h-32 bg-white mx-auto mb-4 rounded-lg flex items-center justify-center">
-                      <div className="text-black text-xs">QR CODE</div>
-                    </div>
-                    <p className="text-white font-medium mb-2">Scan with your phone</p>
-                    <p className="text-gray-400 text-sm mb-4">Connect your camera roll instantly</p>
-                    <Button className="bg-blue-600 hover:bg-blue-700">
-                      Simulate QR Scan
-                    </Button>
-                  </div>
-                )}
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">Style Prompt</label>
-                  <textarea
-                    className="w-full bg-gray-700 border border-gray-600 rounded-lg p-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    rows={3}
-                    placeholder="Describe the style you want... (e.g., professional headshot, artistic portrait)"
-                  />
-                </div>
-
-                <Button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 h-12 text-lg font-semibold">
-                  <Camera className="w-5 h-5 mr-2" />
-                  Generate Selfie (5 Credits)
-                </Button>
-              </div>
-
-              <div className="bg-gray-700 rounded-lg p-4">
-                <h4 className="font-medium mb-3">Quick Tips</h4>
-                <ul className="space-y-2 text-sm text-gray-300">
-                  <li className="flex items-start">
-                    <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                    Use clear, well-lit photos for best results
-                  </li>
-                  <li className="flex items-start">
-                    <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                    Be specific with your style descriptions
-                  </li>
-                  <li className="flex items-start">
-                    <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                    Try different angles and expressions
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </Card>
 
           {/* Instagram-style Tabs */}
           <Tabs defaultValue="photos" className="w-full">
@@ -219,17 +127,100 @@ const Dashboard = () => {
                 <Grid3X3 className="w-4 h-4" />
                 <span>PHOTOS</span>
               </TabsTrigger>
-              <TabsTrigger value="reels" className="flex items-center space-x-2 py-3 border-b-2 border-transparent data-[state=active]:border-white bg-transparent">
-                <Film className="w-4 h-4" />
-                <span>REELS</span>
+              <TabsTrigger value="favorites" className="flex items-center space-x-2 py-3 border-b-2 border-transparent data-[state=active]:border-white bg-transparent">
+                <Heart className="w-4 h-4" />
+                <span>FAVORITES</span>
               </TabsTrigger>
-              <TabsTrigger value="tagged" className="flex items-center space-x-2 py-3 border-b-2 border-transparent data-[state=active]:border-white bg-transparent">
+              <TabsTrigger value="packs" className="flex items-center space-x-2 py-3 border-b-2 border-transparent data-[state=active]:border-white bg-transparent">
                 <Users className="w-4 h-4" />
-                <span>TAGGED</span>
+                <span>PACKS</span>
               </TabsTrigger>
             </TabsList>
 
             <TabsContent value="photos" className="mt-8">
+              {/* Generator Section */}
+              <Card className="bg-gray-800 border-gray-700 p-6 mb-8">
+                <h3 className="text-lg font-semibold mb-4">Create New Selfie</h3>
+                
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">Upload Method</label>
+                      <div className="flex space-x-4 mb-4">
+                        <Button
+                          variant={uploadMethod === 'manual' ? 'default' : 'outline'}
+                          onClick={() => setUploadMethod('manual')}
+                          className={uploadMethod === 'manual' ? 'bg-blue-600 hover:bg-blue-700' : 'border-gray-600 text-white hover:bg-gray-700'}
+                        >
+                          <Camera className="w-4 h-4 mr-2" />
+                          Manual Upload
+                        </Button>
+                        <Button
+                          variant={uploadMethod === 'qr' ? 'default' : 'outline'}
+                          onClick={() => setUploadMethod('qr')}
+                          className={uploadMethod === 'qr' ? 'bg-blue-600 hover:bg-blue-700' : 'border-gray-600 text-white hover:bg-gray-700'}
+                        >
+                          <QrCode className="w-4 h-4 mr-2" />
+                          QR Code
+                        </Button>
+                      </div>
+                    </div>
+
+                    {uploadMethod === 'manual' ? (
+                      <div className="border-2 border-dashed border-gray-600 rounded-lg p-8 text-center hover:border-gray-500 transition-colors cursor-pointer">
+                        <Camera className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                        <p className="text-white font-medium">Click to upload or drag and drop</p>
+                        <p className="text-gray-400 text-sm mt-1">PNG, JPG up to 10MB</p>
+                      </div>
+                    ) : (
+                      <div className="border-2 border-gray-600 rounded-lg p-8 text-center">
+                        <div className="w-32 h-32 bg-white mx-auto mb-4 rounded-lg flex items-center justify-center">
+                          <div className="text-black text-xs">QR CODE</div>
+                        </div>
+                        <p className="text-white font-medium mb-2">Scan with your phone</p>
+                        <p className="text-gray-400 text-sm mb-4">Connect your camera roll instantly</p>
+                        <Button className="bg-blue-600 hover:bg-blue-700">
+                          Simulate QR Scan
+                        </Button>
+                      </div>
+                    )}
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">Style Prompt</label>
+                      <textarea
+                        className="w-full bg-gray-700 border border-gray-600 rounded-lg p-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        rows={3}
+                        placeholder="Describe the style you want... (e.g., professional headshot, artistic portrait)"
+                      />
+                    </div>
+
+                    <Button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 h-12 text-lg font-semibold">
+                      <Camera className="w-5 h-5 mr-2" />
+                      Generate Selfie (5 Credits)
+                    </Button>
+                  </div>
+
+                  <div className="bg-gray-700 rounded-lg p-4">
+                    <h4 className="font-medium mb-3">Quick Tips</h4>
+                    <ul className="space-y-2 text-sm text-gray-300">
+                      <li className="flex items-start">
+                        <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                        Use clear, well-lit photos for best results
+                      </li>
+                      <li className="flex items-start">
+                        <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                        Be specific with your style descriptions
+                      </li>
+                      <li className="flex items-start">
+                        <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                        Try different angles and expressions
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </Card>
+
+              {/* Photos Grid */}
               <div className="grid grid-cols-3 gap-1">
                 {recentPhotos.map((photo) => (
                   <div key={photo.id} className="relative aspect-square group cursor-pointer">
@@ -252,17 +243,17 @@ const Dashboard = () => {
               </div>
             </TabsContent>
 
-            <TabsContent value="reels" className="mt-8">
+            <TabsContent value="favorites" className="mt-8">
               <div className="text-center py-12">
-                <Film className="w-12 h-12 text-gray-500 mx-auto mb-4" />
-                <p className="text-gray-400">No reels yet</p>
+                <Heart className="w-12 h-12 text-gray-500 mx-auto mb-4" />
+                <p className="text-gray-400">No favorite photos yet</p>
               </div>
             </TabsContent>
 
-            <TabsContent value="tagged" className="mt-8">
+            <TabsContent value="packs" className="mt-8">
               <div className="text-center py-12">
                 <Users className="w-12 h-12 text-gray-500 mx-auto mb-4" />
-                <p className="text-gray-400">No tagged photos yet</p>
+                <p className="text-gray-400">No packs yet</p>
               </div>
             </TabsContent>
           </Tabs>
