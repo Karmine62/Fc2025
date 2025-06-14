@@ -20,18 +20,6 @@ const Dashboard = () => {
     planType: 'Premium'
   };
 
-  const recentPhotos = [
-    { id: 1, url: "/lovable-uploads/photo-1649972904349-6e44c42644a7.jpg", liked: true },
-    { id: 2, url: "/lovable-uploads/photo-1581091226825-a6a2a5aee158.jpg", liked: false },
-    { id: 3, url: "/lovable-uploads/photo-1486312338219-ce68d2c6f44d.jpg", liked: true },
-    { id: 4, url: "/lovable-uploads/photo-1488590528505-98d2b5aba04b.jpg", liked: false },
-    { id: 5, url: "/lovable-uploads/photo-1721322800607-8c38375eef04.jpg", liked: true },
-    { id: 6, url: "/lovable-uploads/photo-1649972904349-6e44c42644a7.jpg", liked: false },
-    { id: 7, url: "/lovable-uploads/photo-1581091226825-a6a2a5aee158.jpg", liked: true },
-    { id: 8, url: "/lovable-uploads/photo-1486312338219-ce68d2c6f44d.jpg", liked: false },
-    { id: 9, url: "/lovable-uploads/photo-1488590528505-98d2b5aba04b.jpg", liked: true }
-  ];
-
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       {/* Sidebar */}
@@ -112,11 +100,6 @@ const Dashboard = () => {
                   <span className="text-gray-400 ml-1">following</span>
                 </div>
               </div>
-              
-              <div>
-                <h2 className="font-semibold">AI Selfie Studio</h2>
-                <p className="text-gray-400">✨ {userStats.planType} member</p>
-              </div>
             </div>
           </div>
 
@@ -139,7 +122,7 @@ const Dashboard = () => {
 
             <TabsContent value="photos" className="mt-8">
               {/* Generator Section */}
-              <Card className="bg-gray-800 border-gray-700 p-6 mb-8">
+              <Card className="bg-gray-800 border-gray-700 p-6">
                 <h3 className="text-lg font-semibold mb-4">Create New Selfie</h3>
                 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -219,28 +202,6 @@ const Dashboard = () => {
                   </div>
                 </div>
               </Card>
-
-              {/* Photos Grid */}
-              <div className="grid grid-cols-3 gap-1">
-                {recentPhotos.map((photo) => (
-                  <div key={photo.id} className="relative aspect-square group cursor-pointer">
-                    <img 
-                      src={photo.url} 
-                      alt="Generated selfie"
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center space-x-4">
-                      <div className="flex items-center space-x-1 text-white">
-                        <Heart className={`w-5 h-5 ${photo.liked ? 'fill-current text-red-500' : ''}`} />
-                        <span className="text-sm">42</span>
-                      </div>
-                      <Button size="sm" className="bg-white/20 hover:bg-white/30 text-white">
-                        <Download className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  </div>
-                ))}
-              </div>
             </TabsContent>
 
             <TabsContent value="favorites" className="mt-8">
