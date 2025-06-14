@@ -1,6 +1,5 @@
-
 import { useState } from "react";
-import { Camera, ShoppingBag, Image, User, Plus, Heart, Search, Settings, Grid3X3, Users, Download, QrCode, Store } from "lucide-react";
+import { Camera, ShoppingBag, Image, User, Plus, Heart, Search, Settings, Grid3X3, Users, Download, QrCode, Store, Trash } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -124,7 +123,7 @@ const Dashboard = () => {
                 <span>GENERATOR</span>
               </TabsTrigger>
               <TabsTrigger value="my-photos" className="flex items-center space-x-2 py-3 border-b-2 border-transparent data-[state=active]:border-white bg-transparent">
-                <Heart className="w-4 h-4" />
+                <Camera className="w-4 h-4" />
                 <span>MY PHOTOS</span>
               </TabsTrigger>
               <TabsTrigger value="store" className="flex items-center space-x-2 py-3 border-b-2 border-transparent data-[state=active]:border-white bg-transparent">
@@ -233,9 +232,9 @@ const Dashboard = () => {
                         size="icon"
                         variant="ghost"
                         className="text-white hover:bg-white hover:bg-opacity-20"
-                        onClick={() => console.log(`Toggle like for photo ${photo.id}`)}
+                        onClick={() => console.log(`Delete photo ${photo.id}`)}
                       >
-                        <Heart className={`w-5 h-5 ${photo.liked ? 'fill-red-500 text-red-500' : ''}`} />
+                        <Trash className="w-5 h-5" />
                       </Button>
                       <Button
                         size="icon"
