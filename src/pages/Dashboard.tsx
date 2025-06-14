@@ -262,7 +262,7 @@ const Dashboard = () => {
                     {/* Scene Presets */}
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-3">Scene Preset</label>
-                      <div className="grid grid-cols-2 gap-3">
+                      <div className="grid grid-cols-4 gap-3">
                         {scenePresets.map((scene) => (
                           <Button
                             key={scene.name}
@@ -366,67 +366,22 @@ const Dashboard = () => {
                     </Button>
                   </div>
 
-                  <div className="bg-gradient-to-br from-purple-50/50 to-pink-50/50 rounded-2xl p-6 border border-purple-200/30 space-y-6">
-                    {/* Pro Tips */}
-                    <div>
-                      <h4 className="font-semibold mb-4 text-gray-800">✨ Pro Tips</h4>
-                      <ul className="space-y-3 text-sm text-gray-600">
-                        <li className="flex items-start">
-                          <div className="w-2 h-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                          Use high-quality, well-lit photos for best results
-                        </li>
-                        <li className="flex items-start">
-                          <div className="w-2 h-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                          Face should be clearly visible and centered
-                        </li>
-                        <li className="flex items-start">
-                          <div className="w-2 h-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                          Experiment with different celebrity styles
-                        </li>
-                      </ul>
-                    </div>
-
-                    {/* Scene Tips */}
-                    <div>
-                      <h4 className="font-semibold mb-4 text-gray-800">🎬 Scene Tips</h4>
-                      <ul className="space-y-3 text-sm text-gray-600">
-                        <li className="flex items-start">
-                          <div className="w-2 h-2 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                          Studio for professional headshots
-                        </li>
-                        <li className="flex items-start">
-                          <div className="w-2 h-2 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                          Beach/Park for natural outdoor vibes
-                        </li>
-                        <li className="flex items-start">
-                          <div className="w-2 h-2 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                          Club/Gym for lifestyle shots
-                        </li>
-                      </ul>
-                    </div>
-
-                    {/* Photo Guide */}
-                    <div>
-                      <h4 className="font-semibold mb-4 text-gray-800">📸 Photo Guide</h4>
-                      <ul className="space-y-3 text-sm text-gray-600">
-                        <li className="flex items-start">
-                          <div className="w-2 h-2 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                          Face clearly visible and centered
-                        </li>
-                        <li className="flex items-start">
-                          <div className="w-2 h-2 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                          Good lighting, avoid shadows
-                        </li>
-                        <li className="flex items-start">
-                          <div className="w-2 h-2 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                          High resolution for best results
-                        </li>
-                        <li className="flex items-start">
-                          <div className="w-2 h-2 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                          {uploadMethod === 'qr' ? 'QR syncs instantly' : 'Multiple angles work great'}
-                        </li>
-                      </ul>
-                    </div>
+                  <div className="bg-gradient-to-br from-purple-50/50 to-pink-50/50 rounded-2xl p-6 border border-purple-200/30">
+                    <h4 className="font-semibold mb-4 text-gray-800">✨ Pro Tips</h4>
+                    <ul className="space-y-3 text-sm text-gray-600">
+                      <li className="flex items-start">
+                        <div className="w-2 h-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                        Use high-quality, well-lit photos for best results
+                      </li>
+                      <li className="flex items-start">
+                        <div className="w-2 h-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                        Face should be clearly visible and centered
+                      </li>
+                      <li className="flex items-start">
+                        <div className="w-2 h-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                        Experiment with different celebrity styles
+                      </li>
+                    </ul>
                   </div>
                 </div>
               </Card>
