@@ -1,6 +1,5 @@
-
 import { useState } from "react";
-import { Camera, ShoppingBag, Image, User, Plus, Heart, Search, Settings, Grid3X3, Film, UserTag, Download, QrCode } from "lucide-react";
+import { Camera, ShoppingBag, Image, User, Plus, Heart, Search, Settings, Grid3X3, Film, Users, Download, QrCode } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -225,7 +224,7 @@ const Dashboard = () => {
                 <span>REELS</span>
               </TabsTrigger>
               <TabsTrigger value="tagged" className="flex items-center space-x-2 py-3 border-b-2 border-transparent data-[state=active]:border-white bg-transparent">
-                <UserTag className="w-4 h-4" />
+                <Users className="w-4 h-4" />
                 <span>TAGGED</span>
               </TabsTrigger>
             </TabsList>
@@ -262,7 +261,7 @@ const Dashboard = () => {
 
             <TabsContent value="tagged" className="mt-8">
               <div className="text-center py-12">
-                <UserTag className="w-12 h-12 text-gray-500 mx-auto mb-4" />
+                <Users className="w-12 h-12 text-gray-500 mx-auto mb-4" />
                 <p className="text-gray-400">No tagged photos yet</p>
               </div>
             </TabsContent>
