@@ -1,12 +1,15 @@
 
 import { useState } from "react";
-import { Camera, ShoppingBag, Image, User, Plus, Sparkles, Crown, TrendingUp, Download, Heart } from "lucide-react";
+import { Camera, ShoppingBag, Image, User, Plus, Sparkles, Crown, TrendingUp, Download, Heart, QrCode } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { toast } from "sonner";
 
 const Dashboard = () => {
   const [activeSection, setActiveSection] = useState('generator');
+  const [uploadMethod, setUploadMethod] = useState('manual');
 
   // Mock data
   const userStats = {
@@ -51,6 +54,12 @@ const Dashboard = () => {
     { id: 5, url: "/lovable-uploads/photo-1721322800607-8c38375eef04.jpg", liked: true },
     { id: 6, url: "/lovable-uploads/photo-1649972904349-6e44c42644a7.jpg", liked: false }
   ];
+
+  const handleConnectPhone = () => {
+    toast.success("QR code scanned! Phone camera roll connected.", {
+      description: "You can now access your photos directly from your device."
+    });
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
@@ -134,11 +143,57 @@ const Dashboard = () => {
                 <div className="space-y-6">
                   <div>
                     <label className="block text-sm font-medium text-white mb-2">Upload Your Photo</label>
-                    <div className="border-2 border-dashed border-white/30 rounded-xl p-8 text-center hover:border-purple-400 transition-colors cursor-pointer">
-                      <Camera className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                      <p className="text-white font-medium">Click to upload or drag and drop</p>
-                      <p className="text-gray-400 text-sm mt-1">PNG, JPG up to 10MB</p>
-                    </div>
+                    
+                    {/* Upload Method Tabs */}
+                    <Tabs defaultValue="manual" value={uploadMethod} onValueChange={setUploadMethod} className="mb-4">
+                      <TabsList className="grid w-full grid-cols-2 bg-white/5 border border-white/10">
+                        <TabsTrigger value="manual" className="data-[state=active]:bg-white/10 text-white">
+                          <Camera className="w-4 h-4 mr-2" />
+                          Manual Upload
+                        </TabsTrigger>
+                        <TabsTrigger value="qrcode" className="data-[state=active]:bg-white/10 text-white">
+                          <QrCode className="w-4 h-4 mr-2" />
+                          Connect Phone
+                        </TabsTrigger>
+                      </TabsList>
+                    </Tabs>
+                    
+                    {/* Manual Upload */}
+                    {uploadMethod === "manual" && (
+                      <div className="border-2 border-dashed border-white/30 rounded-xl p-8 text-center hover:border-purple-400 transition-colors cursor-pointer">
+                        <Camera className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                        <p className="text-white font-medium">Click to upload or drag and drop</p>
+                        <p className="text-gray-400 text-sm mt-1">PNG, JPG up to 10MB</p>
+                      </div>
+                    )}
+                    
+                    {/* QR Code */}
+                    {uploadMethod === "qrcode" && (
+                      <div className="border-2 border-white/30 rounded-xl p-8 text-center bg-white/5 backdrop-blur-sm">
+                        <div className="bg-white p-4 rounded-xl mx-auto w-48 h-48 mb-4 relative">
+                          {/* Mock QR Code */}
+                          <div className="absolute inset-0 grid grid-cols-5 grid-rows-5 gap-1 p-4">
+                            {Array(25).fill(0).map((_, i) => (
+                              <div 
+                                key={i} 
+                                className={`bg-black rounded-sm ${
+                                  [0, 1, 2, 3, 4, 5, 9, 15, 19, 20, 21, 22, 23, 24].includes(i) ? 'opacity-100' : 'opacity-0'
+                                }`}
+                              />
+                            ))}
+                          </div>
+                        </div>
+                        <p className="text-white font-medium">Scan with your phone camera</p>
+                        <p className="text-gray-400 text-sm mt-1 mb-4">Connect your camera roll directly</p>
+                        <Button 
+                          onClick={handleConnectPhone}
+                          className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white"
+                        >
+                          <QrCode className="w-4 h-4 mr-2" />
+                          Simulate QR Scan
+                        </Button>
+                      </div>
+                    )}
                   </div>
 
                   <div>
@@ -170,6 +225,10 @@ const Dashboard = () => {
                     <li className="flex items-start">
                       <div className="w-2 h-2 bg-purple-400 rounded-full mt-2 mr-3 flex-shrink-0"></div>
                       Try different angles and expressions
+                    </li>
+                    <li className="flex items-start">
+                      <div className="w-2 h-2 bg-purple-400 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                      Connect your phone to use your camera roll photos
                     </li>
                   </ul>
                 </div>
