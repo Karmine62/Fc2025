@@ -110,7 +110,7 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 text-gray-900">
       {/* Premium Sidebar */}
-      <div className="fixed left-0 top-0 h-full w-80 bg-white/80 backdrop-blur-xl border-r border-gray-200/50 z-10 shadow-2xl">
+      <div className="fixed left-0 top-0 h-full w-80 bg-white/80 backdrop-blur-xl border-r border-gray-200/50 z-20 shadow-2xl">
         <div className="p-8">
           {/* Logo */}
           <div className="flex items-center gap-3 mb-12">
@@ -175,10 +175,10 @@ const Dashboard = () => {
                 <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0 rounded-xl px-8">
                   Edit Profile
                 </Button>
-                <Button variant="outline" size="icon" className="border-gray-300 rounded-xl w-10 h-10">
+                <Button variant="outline" size="icon" className="border-gray-300 rounded-xl w-10 h-10 relative z-10">
                   <Settings className="w-4 h-4" />
                 </Button>
-                <Button variant="outline" size="icon" className="border-gray-300 rounded-xl w-10 h-10">
+                <Button variant="outline" size="icon" className="border-gray-300 rounded-xl w-10 h-10 relative z-10">
                   <Share className="w-4 h-4" />
                 </Button>
               </div>
@@ -209,24 +209,24 @@ const Dashboard = () => {
 
           {/* Instagram-style Tabs */}
           <Tabs defaultValue="generator" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 bg-white/50 backdrop-blur-sm border border-gray-200/50 rounded-2xl h-14 p-2 mb-8">
+            <TabsList className="grid w-full grid-cols-3 bg-white/50 backdrop-blur-sm border border-gray-200/50 rounded-2xl h-14 p-2 mb-8 relative z-10">
               <TabsTrigger 
                 value="generator" 
-                className="flex items-center space-x-3 py-3 rounded-xl data-[state=active]:bg-white data-[state=active]:shadow-md transition-all duration-200"
+                className="flex items-center space-x-3 py-3 rounded-xl data-[state=active]:bg-white data-[state=active]:shadow-md transition-all duration-200 relative z-10"
               >
                 <Grid3X3 className="w-5 h-5" />
                 <span className="font-medium">GENERATE</span>
               </TabsTrigger>
               <TabsTrigger 
                 value="my-photos" 
-                className="flex items-center space-x-3 py-3 rounded-xl data-[state=active]:bg-white data-[state=active]:shadow-md transition-all duration-200"
+                className="flex items-center space-x-3 py-3 rounded-xl data-[state=active]:bg-white data-[state=active]:shadow-md transition-all duration-200 relative z-10"
               >
                 <Camera className="w-5 h-5" />
                 <span className="font-medium">PHOTOS</span>
               </TabsTrigger>
               <TabsTrigger 
                 value="store" 
-                className="flex items-center space-x-3 py-3 rounded-xl data-[state=active]:bg-white data-[state=active]:shadow-md transition-all duration-200"
+                className="flex items-center space-x-3 py-3 rounded-xl data-[state=active]:bg-white data-[state=active]:shadow-md transition-all duration-200 relative z-10"
               >
                 <Store className="w-5 h-5" />
                 <span className="font-medium">FOR YOU</span>
@@ -247,7 +247,7 @@ const Dashboard = () => {
                             key={style}
                             variant={selectedStyle === style ? 'default' : 'outline'}
                             onClick={() => setSelectedStyle(style)}
-                            className={`h-12 rounded-xl text-sm font-medium transition-all duration-200 ${
+                            className={`h-12 rounded-xl text-sm font-medium transition-all duration-200 relative z-10 ${
                               selectedStyle === style 
                                 ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white border-0 shadow-lg' 
                                 : 'border-gray-300 hover:border-purple-300 hover:bg-purple-50'
@@ -268,7 +268,7 @@ const Dashboard = () => {
                             key={scene.name}
                             variant={selectedScene === scene.name ? 'default' : 'outline'}
                             onClick={() => setSelectedScene(scene.name)}
-                            className={`h-16 rounded-xl flex flex-col items-center gap-1 text-xs font-medium transition-all duration-200 ${
+                            className={`h-16 rounded-xl flex flex-col items-center gap-1 text-xs font-medium transition-all duration-200 relative z-10 ${
                               selectedScene === scene.name 
                                 ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white border-0 shadow-lg' 
                                 : 'border-gray-300 hover:border-purple-300 hover:bg-purple-50'
@@ -290,7 +290,7 @@ const Dashboard = () => {
                         <Button
                           variant={uploadMethod === 'manual' ? 'default' : 'outline'}
                           onClick={() => setUploadMethod('manual')}
-                          className={`flex-1 h-10 rounded-xl text-sm font-medium transition-all duration-200 ${
+                          className={`flex-1 h-10 rounded-xl text-sm font-medium transition-all duration-200 relative z-10 ${
                             uploadMethod === 'manual' 
                               ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white border-0' 
                               : 'border-gray-300 hover:border-purple-300 hover:bg-purple-50'
@@ -302,7 +302,7 @@ const Dashboard = () => {
                         <Button
                           variant={uploadMethod === 'qr' ? 'default' : 'outline'}
                           onClick={() => setUploadMethod('qr')}
-                          className={`flex-1 h-10 rounded-xl text-sm font-medium transition-all duration-200 ${
+                          className={`flex-1 h-10 rounded-xl text-sm font-medium transition-all duration-200 relative z-10 ${
                             uploadMethod === 'qr' 
                               ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white border-0' 
                               : 'border-gray-300 hover:border-purple-300 hover:bg-purple-50'
@@ -360,7 +360,7 @@ const Dashboard = () => {
                       />
                     </div>
 
-                    <Button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0 rounded-2xl h-14 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200">
+                    <Button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0 rounded-2xl h-14 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 relative z-10">
                       <Sparkles className="w-5 h-5 mr-3" />
                       Generate Magic (5 Credits)
                     </Button>
@@ -398,24 +398,24 @@ const Dashboard = () => {
                       className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                     />
                     {/* Hover overlay with glass effect */}
-                    <div className="absolute inset-0 bg-black/40 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center space-x-4">
+                    <div className="absolute inset-0 bg-black/40 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center space-x-4 z-10">
                       <Button
                         size="icon"
-                        className="bg-white/20 backdrop-blur-md border border-white/30 text-white hover:bg-white/30 rounded-full w-12 h-12"
+                        className="bg-white/20 backdrop-blur-md border border-white/30 text-white hover:bg-white/30 rounded-full w-12 h-12 relative z-20"
                         onClick={() => console.log(`View photo ${photo.id}`)}
                       >
                         <Eye className="w-5 h-5" />
                       </Button>
                       <Button
                         size="icon"
-                        className="bg-white/20 backdrop-blur-md border border-white/30 text-white hover:bg-white/30 rounded-full w-12 h-12"
+                        className="bg-white/20 backdrop-blur-md border border-white/30 text-white hover:bg-white/30 rounded-full w-12 h-12 relative z-20"
                         onClick={() => console.log(`Download photo ${photo.id}`)}
                       >
                         <Download className="w-5 h-5" />
                       </Button>
                       <Button
                         size="icon"
-                        className="bg-white/20 backdrop-blur-md border border-white/30 text-white hover:bg-white/30 rounded-full w-12 h-12"
+                        className="bg-white/20 backdrop-blur-md border border-white/30 text-white hover:bg-white/30 rounded-full w-12 h-12 relative z-20"
                         onClick={() => console.log(`Delete photo ${photo.id}`)}
                       >
                         <Trash className="w-5 h-5" />
@@ -446,7 +446,7 @@ const Dashboard = () => {
                         />
                       </div>
                       {/* Floating badge */}
-                      <div className="absolute top-4 left-4">
+                      <div className="absolute top-4 left-4 z-10">
                         <Badge className="bg-white/90 backdrop-blur-md text-gray-900 border-0 px-3 py-1 rounded-full shadow-lg">
                           {product.photoCount} photos
                         </Badge>
@@ -465,7 +465,7 @@ const Dashboard = () => {
                         {product.description}
                       </p>
                       
-                      <Button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0 rounded-2xl h-12 font-semibold shadow-lg hover:shadow-xl transition-all duration-200">
+                      <Button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0 rounded-2xl h-12 font-semibold shadow-lg hover:shadow-xl transition-all duration-200 relative z-10">
                         Buy Pack
                       </Button>
                     </div>
