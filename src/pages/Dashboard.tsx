@@ -260,94 +260,138 @@ const Dashboard = () => {
                     </div>
 
                     {/* Scene Presets */}
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-3">Scene Preset</label>
-                      <div className="grid grid-cols-4 gap-3">
-                        {scenePresets.map((scene) => (
-                          <Button
-                            key={scene.name}
-                            variant={selectedScene === scene.name ? 'default' : 'outline'}
-                            onClick={() => setSelectedScene(scene.name)}
-                            className={`h-16 rounded-xl flex flex-col items-center gap-1 text-xs font-medium transition-all duration-200 relative z-10 ${
-                              selectedScene === scene.name 
-                                ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white border-0 shadow-lg' 
-                                : 'border-gray-300 hover:border-purple-300 hover:bg-purple-50'
-                            }`}
-                          >
-                            <span className="text-lg">{scene.emoji}</span>
-                            <span>{scene.name}</span>
-                          </Button>
-                        ))}
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                      <div className="lg:col-span-2">
+                        <label className="block text-sm font-semibold text-gray-700 mb-3">Scene Preset</label>
+                        <div className="grid grid-cols-4 gap-3">
+                          {scenePresets.map((scene) => (
+                            <Button
+                              key={scene.name}
+                              variant={selectedScene === scene.name ? 'default' : 'outline'}
+                              onClick={() => setSelectedScene(scene.name)}
+                              className={`h-16 rounded-xl flex flex-col items-center gap-1 text-xs font-medium transition-all duration-200 relative z-10 ${
+                                selectedScene === scene.name 
+                                  ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white border-0 shadow-lg' 
+                                  : 'border-gray-300 hover:border-purple-300 hover:bg-purple-50'
+                              }`}
+                            >
+                              <span className="text-lg">{scene.emoji}</span>
+                              <span>{scene.name}</span>
+                            </Button>
+                          ))}
+                        </div>
+                      </div>
+                      
+                      <div className="bg-gradient-to-br from-blue-50/50 to-indigo-50/50 rounded-2xl p-4 border border-blue-200/30">
+                        <h4 className="font-semibold mb-3 text-gray-800 text-sm">🎬 Scene Tips</h4>
+                        <ul className="space-y-2 text-xs text-gray-600">
+                          <li className="flex items-start">
+                            <div className="w-1.5 h-1.5 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full mt-1.5 mr-2 flex-shrink-0"></div>
+                            Studio for professional headshots
+                          </li>
+                          <li className="flex items-start">
+                            <div className="w-1.5 h-1.5 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full mt-1.5 mr-2 flex-shrink-0"></div>
+                            Beach/Park for natural outdoor vibes
+                          </li>
+                          <li className="flex items-start">
+                            <div className="w-1.5 h-1.5 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full mt-1.5 mr-2 flex-shrink-0"></div>
+                            Club/Gym for lifestyle shots
+                          </li>
+                        </ul>
                       </div>
                     </div>
 
                     {/* Upload Section */}
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-3">Upload Your Face</label>
-                      
-                      {/* Upload Method Toggle */}
-                      <div className="flex space-x-2 mb-4">
-                        <Button
-                          variant={uploadMethod === 'manual' ? 'default' : 'outline'}
-                          onClick={() => setUploadMethod('manual')}
-                          className={`flex-1 h-10 rounded-xl text-sm font-medium transition-all duration-200 relative z-10 ${
-                            uploadMethod === 'manual' 
-                              ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white border-0' 
-                              : 'border-gray-300 hover:border-purple-300 hover:bg-purple-50'
-                          }`}
-                        >
-                          <Camera className="w-4 h-4 mr-2" />
-                          Upload Photo
-                        </Button>
-                        <Button
-                          variant={uploadMethod === 'qr' ? 'default' : 'outline'}
-                          onClick={() => setUploadMethod('qr')}
-                          className={`flex-1 h-10 rounded-xl text-sm font-medium transition-all duration-200 relative z-10 ${
-                            uploadMethod === 'qr' 
-                              ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white border-0' 
-                              : 'border-gray-300 hover:border-purple-300 hover:bg-purple-50'
-                          }`}
-                        >
-                          <QrCode className="w-4 h-4 mr-2" />
-                          Scan QR
-                        </Button>
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                      <div className="lg:col-span-2">
+                        <label className="block text-sm font-semibold text-gray-700 mb-3">Upload Your Face</label>
+                        
+                        {/* Upload Method Toggle */}
+                        <div className="flex space-x-2 mb-4">
+                          <Button
+                            variant={uploadMethod === 'manual' ? 'default' : 'outline'}
+                            onClick={() => setUploadMethod('manual')}
+                            className={`flex-1 h-10 rounded-xl text-sm font-medium transition-all duration-200 relative z-10 ${
+                              uploadMethod === 'manual' 
+                                ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white border-0' 
+                                : 'border-gray-300 hover:border-purple-300 hover:bg-purple-50'
+                            }`}
+                          >
+                            <Camera className="w-4 h-4 mr-2" />
+                            Upload Photo
+                          </Button>
+                          <Button
+                            variant={uploadMethod === 'qr' ? 'default' : 'outline'}
+                            onClick={() => setUploadMethod('qr')}
+                            className={`flex-1 h-10 rounded-xl text-sm font-medium transition-all duration-200 relative z-10 ${
+                              uploadMethod === 'qr' 
+                                ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white border-0' 
+                                : 'border-gray-300 hover:border-purple-300 hover:bg-purple-50'
+                            }`}
+                          >
+                            <QrCode className="w-4 h-4 mr-2" />
+                            Scan QR
+                          </Button>
+                        </div>
+
+                        {uploadMethod === 'manual' ? (
+                          <div className="border-2 border-dashed border-gray-300 rounded-2xl p-8 text-center hover:border-purple-400 transition-colors cursor-pointer bg-gradient-to-br from-purple-50/50 to-pink-50/50">
+                            <Camera className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                            <p className="text-gray-700 font-medium">Click to upload or drag and drop</p>
+                            <p className="text-gray-500 text-sm mt-1">PNG, JPG up to 10MB</p>
+                          </div>
+                        ) : (
+                          <div className="border-2 border-dashed border-gray-300 rounded-2xl p-8 text-center bg-gradient-to-br from-purple-50/50 to-pink-50/50">
+                            <div className="flex flex-col items-center">
+                              {/* Mock QR Code */}
+                              <div className="w-32 h-32 bg-white rounded-xl shadow-lg p-4 mb-4 border border-gray-200">
+                                <div className="w-full h-full bg-gray-900 rounded-lg relative overflow-hidden">
+                                  {/* QR Code Pattern */}
+                                  <div className="absolute inset-0 grid grid-cols-8 grid-rows-8 gap-px p-1">
+                                    {Array.from({ length: 64 }).map((_, i) => (
+                                      <div
+                                        key={i}
+                                        className={`${
+                                          Math.random() > 0.5 ? 'bg-white' : 'bg-gray-900'
+                                        } rounded-sm`}
+                                      />
+                                    ))}
+                                  </div>
+                                  {/* Corner squares */}
+                                  <div className="absolute top-1 left-1 w-6 h-6 bg-white rounded border border-gray-900"></div>
+                                  <div className="absolute top-1 right-1 w-6 h-6 bg-white rounded border border-gray-900"></div>
+                                  <div className="absolute bottom-1 left-1 w-6 h-6 bg-white rounded border border-gray-900"></div>
+                                </div>
+                              </div>
+                              <QrCode className="w-8 h-8 text-gray-400 mb-3" />
+                              <p className="text-gray-700 font-medium">Scan QR code with your phone</p>
+                              <p className="text-gray-500 text-sm mt-1">Take a photo and it will sync automatically</p>
+                            </div>
+                          </div>
+                        )}
                       </div>
 
-                      {uploadMethod === 'manual' ? (
-                        <div className="border-2 border-dashed border-gray-300 rounded-2xl p-8 text-center hover:border-purple-400 transition-colors cursor-pointer bg-gradient-to-br from-purple-50/50 to-pink-50/50">
-                          <Camera className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                          <p className="text-gray-700 font-medium">Click to upload or drag and drop</p>
-                          <p className="text-gray-500 text-sm mt-1">PNG, JPG up to 10MB</p>
-                        </div>
-                      ) : (
-                        <div className="border-2 border-dashed border-gray-300 rounded-2xl p-8 text-center bg-gradient-to-br from-purple-50/50 to-pink-50/50">
-                          <div className="flex flex-col items-center">
-                            {/* Mock QR Code */}
-                            <div className="w-32 h-32 bg-white rounded-xl shadow-lg p-4 mb-4 border border-gray-200">
-                              <div className="w-full h-full bg-gray-900 rounded-lg relative overflow-hidden">
-                                {/* QR Code Pattern */}
-                                <div className="absolute inset-0 grid grid-cols-8 grid-rows-8 gap-px p-1">
-                                  {Array.from({ length: 64 }).map((_, i) => (
-                                    <div
-                                      key={i}
-                                      className={`${
-                                        Math.random() > 0.5 ? 'bg-white' : 'bg-gray-900'
-                                      } rounded-sm`}
-                                    />
-                                  ))}
-                                </div>
-                                {/* Corner squares */}
-                                <div className="absolute top-1 left-1 w-6 h-6 bg-white rounded border border-gray-900"></div>
-                                <div className="absolute top-1 right-1 w-6 h-6 bg-white rounded border border-gray-900"></div>
-                                <div className="absolute bottom-1 left-1 w-6 h-6 bg-white rounded border border-gray-900"></div>
-                              </div>
-                            </div>
-                            <QrCode className="w-8 h-8 text-gray-400 mb-3" />
-                            <p className="text-gray-700 font-medium">Scan QR code with your phone</p>
-                            <p className="text-gray-500 text-sm mt-1">Take a photo and it will sync automatically</p>
-                          </div>
-                        </div>
-                      )}
+                      <div className="bg-gradient-to-br from-green-50/50 to-emerald-50/50 rounded-2xl p-4 border border-green-200/30">
+                        <h4 className="font-semibold mb-3 text-gray-800 text-sm">📸 Photo Guide</h4>
+                        <ul className="space-y-2 text-xs text-gray-600">
+                          <li className="flex items-start">
+                            <div className="w-1.5 h-1.5 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full mt-1.5 mr-2 flex-shrink-0"></div>
+                            Face clearly visible and centered
+                          </li>
+                          <li className="flex items-start">
+                            <div className="w-1.5 h-1.5 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full mt-1.5 mr-2 flex-shrink-0"></div>
+                            Good lighting, avoid shadows
+                          </li>
+                          <li className="flex items-start">
+                            <div className="w-1.5 h-1.5 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full mt-1.5 mr-2 flex-shrink-0"></div>
+                            High resolution for best results
+                          </li>
+                          <li className="flex items-start">
+                            <div className="w-1.5 h-1.5 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full mt-1.5 mr-2 flex-shrink-0"></div>
+                            {uploadMethod === 'qr' ? 'QR syncs instantly' : 'Multiple angles work great'}
+                          </li>
+                        </ul>
+                      </div>
                     </div>
 
                     {/* Prompt Input */}
