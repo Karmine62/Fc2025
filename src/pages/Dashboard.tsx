@@ -1,5 +1,6 @@
+
 import { useState } from "react";
-import { Camera, ShoppingBag, Image, User, Plus, Heart, Search, Settings, Grid3X3, Users, Download, QrCode, Store, Trash, Eye } from "lucide-react";
+import { Camera, ShoppingBag, Plus, Heart, Search, Settings, Grid3X3, Download, QrCode, Store, Trash, Eye, Share, CreditCard, User, Palette, Sparkles, Zap } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -8,18 +9,41 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const Dashboard = () => {
   const [uploadMethod, setUploadMethod] = useState('manual');
+  const [selectedStyle, setSelectedStyle] = useState('Timothée Chalamet');
+  const [selectedScene, setSelectedScene] = useState('Studio');
 
   // Mock data
   const userStats = {
     credits: 45,
-    totalPhotos: 9,
-    favoritePhotos: 23,
+    generated: 156,
+    currentPlan: 'Premium',
     followers: 1247,
-    following: 892,
-    planType: 'Premium'
+    following: 892
   };
 
-  // Mock photo data for the grid
+  // Style options
+  const styleOptions = [
+    'Timothée Chalamet',
+    'Zendaya',
+    'Ryan Gosling',
+    'Emma Stone',
+    'Michael B. Jordan',
+    'Margot Robbie'
+  ];
+
+  // Scene presets
+  const scenePresets = [
+    { name: 'Studio', emoji: '📸' },
+    { name: 'Gym', emoji: '💪' },
+    { name: 'Club', emoji: '🕺' },
+    { name: 'Beach', emoji: '🏖️' },
+    { name: 'Office', emoji: '💼' },
+    { name: 'Coffee Shop', emoji: '☕' },
+    { name: 'Park', emoji: '🌳' },
+    { name: 'Rooftop', emoji: '🏢' }
+  ];
+
+  // Mock photo data
   const mockPhotos = [
     { id: 1, src: "/lovable-uploads/photo-1649972904349-6e44c42644a7.jpg", liked: true },
     { id: 2, src: "/lovable-uploads/photo-1488590528505-98d2b5aba04b.jpg", liked: false },
@@ -32,250 +56,272 @@ const Dashboard = () => {
     { id: 9, src: "/lovable-uploads/photo-1488590528505-98d2b5aba04b.jpg", liked: true },
   ];
 
-  // Mock store products
+  // Store products
   const storeProducts = [
     {
       id: 1,
-      title: "Glamour",
-      description: "Immerse yourself in a glamour photo shoot, where your allure is captured through striking poses, captivating lighting, and provocative outfits",
+      title: "Glamour Collection",
+      description: "Professional glamour shots with studio lighting",
+      price: "$19.99",
       photoCount: 36,
       images: ["/lovable-uploads/photo-1649972904349-6e44c42644a7.jpg", "/lovable-uploads/photo-1488590528505-98d2b5aba04b.jpg"]
     },
     {
       id: 2,
-      title: "Professional",
-      description: "Create stunning professional headshots perfect for LinkedIn, business cards, and corporate profiles with clean backgrounds and polished lighting",
+      title: "Corporate Elite",
+      description: "Executive-level professional headshots",
+      price: "$24.99",
       photoCount: 24,
       images: ["/lovable-uploads/photo-1581091226825-a6a2a5aee158.jpg", "/lovable-uploads/photo-1531297484001-80022131f5a1.jpg"]
     },
     {
       id: 3,
-      title: "Artistic",
-      description: "Transform into creative artistic portraits with dramatic lighting, unique angles, and expressive compositions that tell your story",
+      title: "Artistic Vision",
+      description: "Creative portraits with dramatic aesthetics",
+      price: "$22.99",
       photoCount: 30,
       images: ["/lovable-uploads/photo-1486312338219-ce68d2c6f44d.jpg", "/lovable-uploads/photo-1582562124811-c09040d0a901.jpg"]
     },
     {
       id: 4,
-      title: "Casual",
-      description: "Natural, relaxed photos perfect for social media and everyday use with authentic expressions and comfortable poses",
+      title: "Street Style",
+      description: "Urban fashion with metropolitan energy",
+      price: "$18.99",
       photoCount: 28,
       images: ["/lovable-uploads/photo-1721322800607-8c38375eef04.jpg", "/lovable-uploads/photo-1649972904349-6e44c42644a7.jpg"]
     },
     {
       id: 5,
-      title: "Fashion",
-      description: "High-fashion editorial style photos with trendy outfits, dynamic poses, and magazine-quality aesthetics",
+      title: "Vintage Dreams",
+      description: "Timeless retro-inspired portraits",
+      price: "$21.99",
       photoCount: 32,
       images: ["/lovable-uploads/photo-1488590528505-98d2b5aba04b.jpg", "/lovable-uploads/photo-1581091226825-a6a2a5aee158.jpg"]
     },
     {
       id: 6,
-      title: "Vintage",
-      description: "Step back in time with vintage-inspired portraits featuring classic styling, retro filters, and timeless elegance",
+      title: "Natural Beauty",
+      description: "Outdoor portraits with golden hour lighting",
+      price: "$20.99",
       photoCount: 26,
       images: ["/lovable-uploads/photo-1531297484001-80022131f5a1.jpg", "/lovable-uploads/photo-1486312338219-ce68d2c6f44d.jpg"]
-    },
-    {
-      id: 7,
-      title: "Outdoor",
-      description: "Natural outdoor portraits with beautiful landscapes, golden hour lighting, and fresh air vibes",
-      photoCount: 35,
-      images: ["/lovable-uploads/photo-1582562124811-c09040d0a901.jpg", "/lovable-uploads/photo-1721322800607-8c38375eef04.jpg"]
-    },
-    {
-      id: 8,
-      title: "Urban",
-      description: "City-inspired portraits with urban backgrounds, street style fashion, and metropolitan energy",
-      photoCount: 29,
-      images: ["/lovable-uploads/photo-1649972904349-6e44c42644a7.jpg", "/lovable-uploads/photo-1488590528505-98d2b5aba04b.jpg"]
-    },
-    {
-      id: 9,
-      title: "Corporate",
-      description: "Executive-level professional photos perfect for C-suite profiles, board presentations, and high-stakes business meetings",
-      photoCount: 22,
-      images: ["/lovable-uploads/photo-1581091226825-a6a2a5aee158.jpg", "/lovable-uploads/photo-1531297484001-80022131f5a1.jpg"]
     }
   ];
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
-      {/* Sidebar */}
-      <div className="fixed left-0 top-0 h-full w-72 bg-black border-r border-gray-800 z-10">
-        <div className="p-6">
-          <h1 className="text-xl font-semibold mb-8">AI Selfie Studio</h1>
-          
-          {/* Search Bar */}
-          <div className="relative mb-8">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Search"
-              className="w-full bg-gray-800 rounded-lg pl-10 pr-4 py-2 text-sm placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-600"
-            />
-          </div>
-
-          {/* Credits Display */}
-          <div className="mb-6 p-4 bg-gray-800 rounded-lg">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm text-gray-400">Credits</span>
-              <Badge className="bg-blue-600 hover:bg-blue-700">{userStats.credits}</Badge>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 text-gray-900">
+      {/* Premium Sidebar */}
+      <div className="fixed left-0 top-0 h-full w-80 bg-white/80 backdrop-blur-xl border-r border-gray-200/50 z-10 shadow-2xl">
+        <div className="p-8">
+          {/* Logo */}
+          <div className="flex items-center gap-3 mb-12">
+            <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
+              <Sparkles className="w-6 h-6 text-white" />
             </div>
+            <h1 className="text-xl font-semibold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+              AI Studio
+            </h1>
+          </div>
+          
+          {/* Credits Display */}
+          <div className="mb-8 p-6 bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-2xl border border-purple-200/30">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-sm font-medium text-gray-600">Credits</span>
+              <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white border-0 px-3 py-1">
+                {userStats.credits}
+              </Badge>
+            </div>
+            <Button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0 rounded-xl h-11 font-medium">
+              <CreditCard className="w-4 h-4 mr-2" />
+              Buy More Credits
+            </Button>
           </div>
 
-          {/* Get Credits Button */}
-          <Button className="w-full mb-6 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
-            <Plus className="w-4 h-4 mr-2" />
-            Get Credits
-          </Button>
-
-          {/* Settings */}
-          <Button variant="outline" className="w-full mb-4 border-gray-600 text-white hover:bg-gray-800">
-            <Settings className="w-4 h-4 mr-2" />
-            Settings
-          </Button>
-
-          {/* Store */}
-          <Button variant="outline" className="w-full border-gray-600 text-white hover:bg-gray-800">
-            <ShoppingBag className="w-4 h-4 mr-2" />
-            Store
-          </Button>
+          {/* Navigation */}
+          <div className="space-y-2">
+            <Button variant="ghost" className="w-full justify-start h-12 rounded-xl hover:bg-gray-100/50 text-gray-700">
+              <Palette className="w-5 h-5 mr-3" />
+              Style Profile Settings
+            </Button>
+            <Button variant="ghost" className="w-full justify-start h-12 rounded-xl hover:bg-gray-100/50 text-gray-700">
+              <User className="w-5 h-5 mr-3" />
+              Account Settings
+            </Button>
+            <Button variant="ghost" className="w-full justify-start h-12 rounded-xl hover:bg-gray-100/50 text-gray-700">
+              <ShoppingBag className="w-5 h-5 mr-3" />
+              Store
+            </Button>
+          </div>
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="ml-72 min-h-screen">
-        <div className="max-w-4xl mx-auto px-8 py-8">
-          {/* Profile Header */}
-          <div className="flex items-center space-x-8 mb-8">
-            <Avatar className="w-32 h-32">
-              <AvatarImage src="/lovable-uploads/photo-1649972904349-6e44c42644a7.jpg" />
-              <AvatarFallback>AI</AvatarFallback>
-            </Avatar>
+      <div className="ml-80 min-h-screen">
+        <div className="max-w-5xl mx-auto px-8 py-12">
+          {/* Instagram-style Profile Header */}
+          <div className="flex items-center space-x-12 mb-12">
+            <div className="relative">
+              <Avatar className="w-40 h-40 ring-4 ring-white shadow-2xl">
+                <AvatarImage src="/lovable-uploads/photo-1649972904349-6e44c42644a7.jpg" />
+                <AvatarFallback className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-2xl">AI</AvatarFallback>
+              </Avatar>
+              <div className="absolute -bottom-2 -right-2 w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center shadow-lg">
+                <Zap className="w-6 h-6 text-white" />
+              </div>
+            </div>
             
             <div className="flex-1">
-              <div className="flex items-center space-x-4 mb-4">
-                <h1 className="text-2xl font-light">ai_selfie_studio</h1>
-                <Button variant="outline" className="border-gray-600 text-white hover:bg-gray-800">
-                  Edit profile
+              <div className="flex items-center space-x-6 mb-6">
+                <h1 className="text-3xl font-light text-gray-900">ai_studio_pro</h1>
+                <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0 rounded-xl px-8">
+                  Edit Profile
                 </Button>
-                <Button variant="outline" size="icon" className="border-gray-600 text-white hover:bg-gray-800">
+                <Button variant="outline" size="icon" className="border-gray-300 rounded-xl w-10 h-10">
                   <Settings className="w-4 h-4" />
+                </Button>
+                <Button variant="outline" size="icon" className="border-gray-300 rounded-xl w-10 h-10">
+                  <Share className="w-4 h-4" />
                 </Button>
               </div>
               
-              <div className="flex space-x-8 mb-4">
+              <div className="flex space-x-12 mb-6">
                 <div className="text-center">
-                  <span className="font-semibold">{userStats.totalPhotos}</span>
-                  <span className="text-gray-400 ml-1">photos</span>
+                  <span className="text-2xl font-semibold text-gray-900">{userStats.generated}</span>
+                  <span className="text-gray-500 ml-2 block text-sm">generated</span>
                 </div>
                 <div className="text-center">
-                  <span className="font-semibold">{userStats.followers}</span>
-                  <span className="text-gray-400 ml-1">followers</span>
+                  <span className="text-2xl font-semibold text-gray-900">{userStats.followers}</span>
+                  <span className="text-gray-500 ml-2 block text-sm">followers</span>
                 </div>
                 <div className="text-center">
-                  <span className="font-semibold">{userStats.following}</span>
-                  <span className="text-gray-400 ml-1">following</span>
+                  <span className="text-2xl font-semibold text-gray-900">{userStats.following}</span>
+                  <span className="text-gray-500 ml-2 block text-sm">following</span>
                 </div>
+              </div>
+
+              <div className="flex items-center space-x-2">
+                <Badge className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white border-0 px-3 py-1">
+                  {userStats.currentPlan}
+                </Badge>
+                <span className="text-gray-600 text-sm">Plan</span>
               </div>
             </div>
           </div>
 
           {/* Instagram-style Tabs */}
           <Tabs defaultValue="generator" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 bg-transparent border-b border-gray-700 rounded-none h-auto p-0">
-              <TabsTrigger value="generator" className="flex items-center space-x-2 py-3 border-b-2 border-transparent data-[state=active]:border-white bg-transparent">
-                <Grid3X3 className="w-4 h-4" />
-                <span>GENERATOR</span>
+            <TabsList className="grid w-full grid-cols-3 bg-white/50 backdrop-blur-sm border border-gray-200/50 rounded-2xl h-14 p-2 mb-8">
+              <TabsTrigger 
+                value="generator" 
+                className="flex items-center space-x-3 py-3 rounded-xl data-[state=active]:bg-white data-[state=active]:shadow-md transition-all duration-200"
+              >
+                <Grid3X3 className="w-5 h-5" />
+                <span className="font-medium">PHOTOS</span>
               </TabsTrigger>
-              <TabsTrigger value="my-photos" className="flex items-center space-x-2 py-3 border-b-2 border-transparent data-[state=active]:border-white bg-transparent">
-                <Camera className="w-4 h-4" />
-                <span>MY PHOTOS</span>
+              <TabsTrigger 
+                value="my-photos" 
+                className="flex items-center space-x-3 py-3 rounded-xl data-[state=active]:bg-white data-[state=active]:shadow-md transition-all duration-200"
+              >
+                <Camera className="w-5 h-5" />
+                <span className="font-medium">REELS</span>
               </TabsTrigger>
-              <TabsTrigger value="store" className="flex items-center space-x-2 py-3 border-b-2 border-transparent data-[state=active]:border-white bg-transparent">
-                <Store className="w-4 h-4" />
-                <span>STORE</span>
+              <TabsTrigger 
+                value="store" 
+                className="flex items-center space-x-3 py-3 rounded-xl data-[state=active]:bg-white data-[state=active]:shadow-md transition-all duration-200"
+              >
+                <Store className="w-5 h-5" />
+                <span className="font-medium">TAGGED</span>
               </TabsTrigger>
             </TabsList>
 
-            <TabsContent value="generator" className="mt-8">
+            <TabsContent value="generator" className="mt-0">
               {/* Generator Section */}
-              <Card className="bg-gray-800 border-gray-700 p-6">
-                <h3 className="text-lg font-semibold mb-4">Create New Selfie</h3>
-                
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  <div className="space-y-4">
+              <Card className="bg-white/70 backdrop-blur-xl border border-gray-200/50 rounded-3xl p-8 shadow-2xl">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                  <div className="space-y-6">
+                    {/* Style Selector */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-2">Upload Method</label>
-                      <div className="flex space-x-4 mb-4">
-                        <Button
-                          variant={uploadMethod === 'manual' ? 'default' : 'outline'}
-                          onClick={() => setUploadMethod('manual')}
-                          className={uploadMethod === 'manual' ? 'bg-blue-600 hover:bg-blue-700' : 'border-gray-600 text-white hover:bg-gray-700'}
-                        >
-                          <Camera className="w-4 h-4 mr-2" />
-                          Manual Upload
-                        </Button>
-                        <Button
-                          variant={uploadMethod === 'qr' ? 'default' : 'outline'}
-                          onClick={() => setUploadMethod('qr')}
-                          className={uploadMethod === 'qr' ? 'bg-blue-600 hover:bg-blue-700' : 'border-gray-600 text-white hover:bg-gray-700'}
-                        >
-                          <QrCode className="w-4 h-4 mr-2" />
-                          QR Code
-                        </Button>
+                      <label className="block text-sm font-semibold text-gray-700 mb-3">Choose Your Style</label>
+                      <div className="grid grid-cols-2 gap-3">
+                        {styleOptions.map((style) => (
+                          <Button
+                            key={style}
+                            variant={selectedStyle === style ? 'default' : 'outline'}
+                            onClick={() => setSelectedStyle(style)}
+                            className={`h-12 rounded-xl text-sm font-medium transition-all duration-200 ${
+                              selectedStyle === style 
+                                ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white border-0 shadow-lg' 
+                                : 'border-gray-300 hover:border-purple-300 hover:bg-purple-50'
+                            }`}
+                          >
+                            {style}
+                          </Button>
+                        ))}
                       </div>
                     </div>
 
-                    {uploadMethod === 'manual' ? (
-                      <div className="border-2 border-dashed border-gray-600 rounded-lg p-8 text-center hover:border-gray-500 transition-colors cursor-pointer">
-                        <Camera className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                        <p className="text-white font-medium">Click to upload or drag and drop</p>
-                        <p className="text-gray-400 text-sm mt-1">PNG, JPG up to 10MB</p>
-                      </div>
-                    ) : (
-                      <div className="border-2 border-gray-600 rounded-lg p-8 text-center">
-                        <div className="w-32 h-32 bg-white mx-auto mb-4 rounded-lg flex items-center justify-center">
-                          <div className="text-black text-xs">QR CODE</div>
-                        </div>
-                        <p className="text-white font-medium mb-2">Scan with your phone</p>
-                        <p className="text-gray-400 text-sm mb-4">Connect your camera roll instantly</p>
-                        <Button className="bg-blue-600 hover:bg-blue-700">
-                          Simulate QR Scan
-                        </Button>
-                      </div>
-                    )}
-
+                    {/* Scene Presets */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-2">Style Prompt</label>
+                      <label className="block text-sm font-semibold text-gray-700 mb-3">Scene Preset</label>
+                      <div className="grid grid-cols-4 gap-3">
+                        {scenePresets.map((scene) => (
+                          <Button
+                            key={scene.name}
+                            variant={selectedScene === scene.name ? 'default' : 'outline'}
+                            onClick={() => setSelectedScene(scene.name)}
+                            className={`h-16 rounded-xl flex flex-col items-center gap-1 text-xs font-medium transition-all duration-200 ${
+                              selectedScene === scene.name 
+                                ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white border-0 shadow-lg' 
+                                : 'border-gray-300 hover:border-purple-300 hover:bg-purple-50'
+                            }`}
+                          >
+                            <span className="text-lg">{scene.emoji}</span>
+                            <span>{scene.name}</span>
+                          </Button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Upload Section */}
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-3">Upload Your Face</label>
+                      <div className="border-2 border-dashed border-gray-300 rounded-2xl p-8 text-center hover:border-purple-400 transition-colors cursor-pointer bg-gradient-to-br from-purple-50/50 to-pink-50/50">
+                        <Camera className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                        <p className="text-gray-700 font-medium">Click to upload or drag and drop</p>
+                        <p className="text-gray-500 text-sm mt-1">PNG, JPG up to 10MB</p>
+                      </div>
+                    </div>
+
+                    {/* Prompt Input */}
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-3">Style Prompt</label>
                       <textarea
-                        className="w-full bg-gray-700 border border-gray-600 rounded-lg p-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full bg-white/80 border border-gray-300 rounded-2xl p-4 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
                         rows={3}
-                        placeholder="Describe the style you want... (e.g., professional headshot, artistic portrait)"
+                        placeholder="Describe additional style details..."
                       />
                     </div>
 
-                    <Button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 h-12 text-lg font-semibold">
-                      <Camera className="w-5 h-5 mr-2" />
-                      Generate Selfie (5 Credits)
+                    <Button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0 rounded-2xl h-14 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200">
+                      <Sparkles className="w-5 h-5 mr-3" />
+                      Generate Magic (5 Credits)
                     </Button>
                   </div>
 
-                  <div className="bg-gray-700 rounded-lg p-4">
-                    <h4 className="font-medium mb-3">Quick Tips</h4>
-                    <ul className="space-y-2 text-sm text-gray-300">
+                  <div className="bg-gradient-to-br from-purple-50/50 to-pink-50/50 rounded-2xl p-6 border border-purple-200/30">
+                    <h4 className="font-semibold mb-4 text-gray-800">✨ Pro Tips</h4>
+                    <ul className="space-y-3 text-sm text-gray-600">
                       <li className="flex items-start">
-                        <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                        Use clear, well-lit photos for best results
+                        <div className="w-2 h-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                        Use high-quality, well-lit photos for best results
                       </li>
                       <li className="flex items-start">
-                        <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                        Be specific with your style descriptions
+                        <div className="w-2 h-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                        Face should be clearly visible and centered
                       </li>
                       <li className="flex items-start">
-                        <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                        Try different angles and expressions
+                        <div className="w-2 h-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                        Experiment with different celebrity styles
                       </li>
                     </ul>
                   </div>
@@ -283,41 +329,38 @@ const Dashboard = () => {
               </Card>
             </TabsContent>
 
-            <TabsContent value="my-photos" className="mt-8">
-              {/* 3x3 Photo Grid */}
-              <div className="grid grid-cols-3 gap-1">
+            <TabsContent value="my-photos" className="mt-0">
+              {/* My Photos Grid - Instagram Reels style */}
+              <div className="grid grid-cols-3 gap-1 rounded-2xl overflow-hidden">
                 {mockPhotos.map((photo) => (
-                  <div key={photo.id} className="relative aspect-square group overflow-hidden">
+                  <div key={photo.id} className="relative aspect-square group overflow-hidden bg-white">
                     <img
                       src={photo.src}
                       alt={`Photo ${photo.id}`}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                     />
-                    {/* Hover overlay with actions */}
-                    <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center space-x-4">
+                    {/* Hover overlay with glass effect */}
+                    <div className="absolute inset-0 bg-black/40 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center space-x-4">
                       <Button
                         size="icon"
-                        variant="ghost"
-                        className="text-white hover:bg-white hover:bg-opacity-20"
+                        className="bg-white/20 backdrop-blur-md border border-white/30 text-white hover:bg-white/30 rounded-full w-12 h-12"
                         onClick={() => console.log(`View photo ${photo.id}`)}
                       >
                         <Eye className="w-5 h-5" />
                       </Button>
                       <Button
                         size="icon"
-                        variant="ghost"
-                        className="text-white hover:bg-white hover:bg-opacity-20"
-                        onClick={() => console.log(`Delete photo ${photo.id}`)}
-                      >
-                        <Trash className="w-5 h-5" />
-                      </Button>
-                      <Button
-                        size="icon"
-                        variant="ghost"
-                        className="text-white hover:bg-white hover:bg-opacity-20"
+                        className="bg-white/20 backdrop-blur-md border border-white/30 text-white hover:bg-white/30 rounded-full w-12 h-12"
                         onClick={() => console.log(`Download photo ${photo.id}`)}
                       >
                         <Download className="w-5 h-5" />
+                      </Button>
+                      <Button
+                        size="icon"
+                        className="bg-white/20 backdrop-blur-md border border-white/30 text-white hover:bg-white/30 rounded-full w-12 h-12"
+                        onClick={() => console.log(`Delete photo ${photo.id}`)}
+                      >
+                        <Trash className="w-5 h-5" />
                       </Button>
                     </div>
                   </div>
@@ -325,50 +368,47 @@ const Dashboard = () => {
               </div>
             </TabsContent>
 
-            <TabsContent value="store" className="mt-8">
-              {/* Store Products Grid */}
-              <div className="grid grid-cols-3 gap-6">
+            <TabsContent value="store" className="mt-0">
+              {/* Store Products - Instagram Tagged style */}
+              <div className="grid grid-cols-2 gap-8">
                 {storeProducts.map((product) => (
-                  <Card key={product.id} className="bg-gray-800 border-gray-700 overflow-hidden">
+                  <Card key={product.id} className="bg-white/70 backdrop-blur-xl border border-gray-200/50 rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 group">
                     {/* Product Images */}
-                    <div className="relative aspect-square">
+                    <div className="relative aspect-square overflow-hidden">
                       <div className="grid grid-cols-2 h-full gap-px">
                         <img
                           src={product.images[0]}
                           alt={`${product.title} 1`}
-                          className="w-full h-full object-cover"
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                         />
                         <img
                           src={product.images[1]}
                           alt={`${product.title} 2`}
-                          className="w-full h-full object-cover"
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                         />
                       </div>
-                      {/* Camera Icon Overlay */}
-                      <div className="absolute top-3 left-3">
-                        <div className="bg-black bg-opacity-70 rounded-full p-2">
-                          <Camera className="w-4 h-4 text-white" />
-                        </div>
+                      {/* Floating badge */}
+                      <div className="absolute top-4 left-4">
+                        <Badge className="bg-white/90 backdrop-blur-md text-gray-900 border-0 px-3 py-1 rounded-full shadow-lg">
+                          {product.photoCount} photos
+                        </Badge>
                       </div>
                     </div>
                     
                     {/* Product Info */}
-                    <div className="p-4">
-                      <h3 className="text-lg font-semibold text-white mb-2">{product.title}</h3>
-                      <p className="text-gray-400 text-sm mb-4 leading-relaxed line-clamp-3">
+                    <div className="p-6">
+                      <div className="flex items-start justify-between mb-3">
+                        <h3 className="text-xl font-semibold text-gray-900">{product.title}</h3>
+                        <span className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                          {product.price}
+                        </span>
+                      </div>
+                      <p className="text-gray-600 text-sm mb-6 leading-relaxed">
                         {product.description}
                       </p>
                       
-                      {/* Photo Count Badge */}
-                      <div className="mb-4">
-                        <Badge className="bg-green-600 hover:bg-green-700 text-white text-xs">
-                          {product.photoCount} PHOTOS
-                        </Badge>
-                      </div>
-
-                      {/* Buy Now Button */}
-                      <Button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
-                        Buy Now
+                      <Button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0 rounded-2xl h-12 font-semibold shadow-lg hover:shadow-xl transition-all duration-200">
+                        Buy Pack
                       </Button>
                     </div>
                   </Card>
