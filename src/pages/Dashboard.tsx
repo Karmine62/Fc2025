@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Camera, ShoppingBag, Plus, Heart, Search, Settings, Grid3X3, Download, QrCode, Store, Trash, Eye, Share, CreditCard, User, Palette, Sparkles, Zap } from "lucide-react";
+import { Camera, ShoppingBag, Plus, Heart, Search, Settings, Bot, Download, QrCode, Store, Trash, Eye, Share, CreditCard, User, Palette, Sparkles, Zap } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -223,7 +223,7 @@ const Dashboard = () => {
                 value="generator" 
                 className="flex items-center space-x-3 py-3 rounded-xl data-[state=active]:bg-white data-[state=active]:shadow-md transition-all duration-200 relative z-10"
               >
-                <Grid3X3 className="w-5 h-5" />
+                <Bot className="w-5 h-5" />
                 <span className="font-medium">GENERATE</span>
               </TabsTrigger>
               <TabsTrigger 
