@@ -247,28 +247,7 @@ const Dashboard = () => {
               <Card className="bg-white/70 backdrop-blur-xl border border-gray-200/50 rounded-3xl p-8 shadow-2xl">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                   <div className="space-y-6">
-                    {/* Style Selector */}
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-3">Choose Your Style</label>
-                      <div className="grid grid-cols-2 gap-3">
-                        {styleOptions.map((style) => (
-                          <Button
-                            key={style}
-                            variant={selectedStyle === style ? 'default' : 'outline'}
-                            onClick={() => setSelectedStyle(style)}
-                            className={`h-12 rounded-xl text-sm font-medium transition-all duration-200 relative z-10 ${
-                              selectedStyle === style 
-                                ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white border-0 shadow-lg' 
-                                : 'border-gray-300 hover:border-purple-300 hover:bg-purple-50'
-                            }`}
-                          >
-                            {style}
-                          </Button>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Scene Presets */}
+                    {/* Scene Presets - First */}
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-3">Scene Preset</label>
                       <div className="grid grid-cols-4 gap-3">
@@ -290,7 +269,7 @@ const Dashboard = () => {
                       </div>
                     </div>
 
-                    {/* Time of Day */}
+                    {/* Time of Day - Second */}
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-3">Time of Day</label>
                       <div className="grid grid-cols-4 gap-3">
@@ -307,6 +286,27 @@ const Dashboard = () => {
                           >
                             <span className="text-lg">{timeOption.emoji}</span>
                             <span>{timeOption.name}</span>
+                          </Button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Style Selector - Third */}
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-3">Choose Your Style</label>
+                      <div className="grid grid-cols-2 gap-3">
+                        {styleOptions.map((style) => (
+                          <Button
+                            key={style}
+                            variant={selectedStyle === style ? 'default' : 'outline'}
+                            onClick={() => setSelectedStyle(style)}
+                            className={`h-12 rounded-xl text-sm font-medium transition-all duration-200 relative z-10 ${
+                              selectedStyle === style 
+                                ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white border-0 shadow-lg' 
+                                : 'border-gray-300 hover:border-purple-300 hover:bg-purple-50'
+                            }`}
+                          >
+                            {style}
                           </Button>
                         ))}
                       </div>
