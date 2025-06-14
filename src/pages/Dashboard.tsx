@@ -13,12 +13,25 @@ const Dashboard = () => {
   // Mock data
   const userStats = {
     credits: 45,
-    totalPhotos: 128,
+    totalPhotos: 9,
     favoritePhotos: 23,
     followers: 1247,
     following: 892,
     planType: 'Premium'
   };
+
+  // Mock photo data for the grid
+  const mockPhotos = [
+    { id: 1, src: "/lovable-uploads/photo-1649972904349-6e44c42644a7.jpg", liked: true },
+    { id: 2, src: "/lovable-uploads/photo-1488590528505-98d2b5aba04b.jpg", liked: false },
+    { id: 3, src: "/lovable-uploads/photo-1581091226825-a6a2a5aee158.jpg", liked: true },
+    { id: 4, src: "/lovable-uploads/photo-1531297484001-80022131f5a1.jpg", liked: false },
+    { id: 5, src: "/lovable-uploads/photo-1486312338219-ce68d2c6f44d.jpg", liked: true },
+    { id: 6, src: "/lovable-uploads/photo-1582562124811-c09040d0a901.jpg", liked: false },
+    { id: 7, src: "/lovable-uploads/photo-1721322800607-8c38375eef04.jpg", liked: true },
+    { id: 8, src: "/lovable-uploads/photo-1649972904349-6e44c42644a7.jpg", liked: false },
+    { id: 9, src: "/lovable-uploads/photo-1488590528505-98d2b5aba04b.jpg", liked: true },
+  ];
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
@@ -205,9 +218,36 @@ const Dashboard = () => {
             </TabsContent>
 
             <TabsContent value="my-photos" className="mt-8">
-              <div className="text-center py-12">
-                <Heart className="w-12 h-12 text-gray-500 mx-auto mb-4" />
-                <p className="text-gray-400">No photos yet</p>
+              {/* 3x3 Photo Grid */}
+              <div className="grid grid-cols-3 gap-1">
+                {mockPhotos.map((photo) => (
+                  <div key={photo.id} className="relative aspect-square group overflow-hidden">
+                    <img
+                      src={photo.src}
+                      alt={`Photo ${photo.id}`}
+                      className="w-full h-full object-cover"
+                    />
+                    {/* Hover overlay with actions */}
+                    <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center space-x-4">
+                      <Button
+                        size="icon"
+                        variant="ghost"
+                        className="text-white hover:bg-white hover:bg-opacity-20"
+                        onClick={() => console.log(`Toggle like for photo ${photo.id}`)}
+                      >
+                        <Heart className={`w-5 h-5 ${photo.liked ? 'fill-red-500 text-red-500' : ''}`} />
+                      </Button>
+                      <Button
+                        size="icon"
+                        variant="ghost"
+                        className="text-white hover:bg-white hover:bg-opacity-20"
+                        onClick={() => console.log(`Download photo ${photo.id}`)}
+                      >
+                        <Download className="w-5 h-5" />
+                      </Button>
+                    </div>
+                  </div>
+                ))}
               </div>
             </TabsContent>
 
