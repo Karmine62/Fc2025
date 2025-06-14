@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Camera, ShoppingBag, Image, User, Plus, Heart, Search, Settings, Grid3X3, Users, Download, QrCode, Store, Trash } from "lucide-react";
+import { Camera, ShoppingBag, Image, User, Plus, Heart, Search, Settings, Grid3X3, Users, Download, QrCode, Store, Trash, Eye } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -295,6 +295,14 @@ const Dashboard = () => {
                     />
                     {/* Hover overlay with actions */}
                     <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center space-x-4">
+                      <Button
+                        size="icon"
+                        variant="ghost"
+                        className="text-white hover:bg-white hover:bg-opacity-20"
+                        onClick={() => console.log(`View photo ${photo.id}`)}
+                      >
+                        <Eye className="w-5 h-5" />
+                      </Button>
                       <Button
                         size="icon"
                         variant="ghost"
