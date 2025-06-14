@@ -329,12 +329,12 @@ const Dashboard = () => {
 
             <TabsContent value="store" className="mt-8">
               {/* Store Products Grid */}
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-3 gap-6">
                 {storeProducts.map((product) => (
-                  <Card key={product.id} className="bg-gray-800 border-gray-700 overflow-hidden cursor-pointer hover:bg-gray-750 transition-colors">
+                  <Card key={product.id} className="bg-gray-800 border-gray-700 overflow-hidden">
                     {/* Product Images */}
                     <div className="relative aspect-square">
-                      <div className="grid grid-cols-2 h-full">
+                      <div className="grid grid-cols-2 h-full gap-px">
                         <img
                           src={product.images[0]}
                           alt={`${product.title} 1`}
@@ -348,7 +348,7 @@ const Dashboard = () => {
                       </div>
                       {/* Camera Icon Overlay */}
                       <div className="absolute top-3 left-3">
-                        <div className="bg-black bg-opacity-60 rounded-full p-2">
+                        <div className="bg-black bg-opacity-70 rounded-full p-2">
                           <Camera className="w-4 h-4 text-white" />
                         </div>
                       </div>
@@ -357,19 +357,24 @@ const Dashboard = () => {
                     {/* Product Info */}
                     <div className="p-4">
                       <h3 className="text-lg font-semibold text-white mb-2">{product.title}</h3>
-                      <p className="text-gray-400 text-sm mb-3 leading-relaxed">
+                      <p className="text-gray-400 text-sm mb-4 leading-relaxed line-clamp-3">
                         {product.description}
                       </p>
                       
-                      {/* Stats */}
-                      <div className="flex items-center justify-between">
-                        <Badge className="bg-green-600 hover:bg-green-700 text-white">
+                      {/* Stats Row */}
+                      <div className="flex items-center justify-between mb-4">
+                        <Badge className="bg-green-600 hover:bg-green-700 text-white text-xs">
                           {product.photoCount} PHOTOS
                         </Badge>
                         <Badge variant="outline" className="border-red-500 text-red-500 text-xs">
                           {product.weeklyRuns}
                         </Badge>
                       </div>
+
+                      {/* Buy Now Button */}
+                      <Button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
+                        Buy Now
+                      </Button>
                     </div>
                   </Card>
                 ))}
