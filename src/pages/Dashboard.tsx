@@ -10,6 +10,7 @@ const Dashboard = () => {
   const [uploadMethod, setUploadMethod] = useState('manual');
   const [selectedStyle, setSelectedStyle] = useState('Timothée Chalamet');
   const [selectedScene, setSelectedScene] = useState('Studio');
+  const [selectedTimeOfDay, setSelectedTimeOfDay] = useState('Morning');
 
   // Mock data
   const userStats = {
@@ -40,6 +41,14 @@ const Dashboard = () => {
     { name: 'Coffee Shop', emoji: '☕' },
     { name: 'Park', emoji: '🌳' },
     { name: 'Rooftop', emoji: '🏢' }
+  ];
+
+  // Time of day options
+  const timeOfDayOptions = [
+    { name: 'Morning', emoji: '🌅' },
+    { name: 'Afternoon', emoji: '☀️' },
+    { name: 'Evening', emoji: '🌆' },
+    { name: 'Night', emoji: '🌙' }
   ];
 
   // Mock photo data
@@ -276,6 +285,28 @@ const Dashboard = () => {
                           >
                             <span className="text-lg">{scene.emoji}</span>
                             <span>{scene.name}</span>
+                          </Button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Time of Day */}
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-3">Time of Day</label>
+                      <div className="grid grid-cols-4 gap-3">
+                        {timeOfDayOptions.map((timeOption) => (
+                          <Button
+                            key={timeOption.name}
+                            variant={selectedTimeOfDay === timeOption.name ? 'default' : 'outline'}
+                            onClick={() => setSelectedTimeOfDay(timeOption.name)}
+                            className={`h-16 rounded-xl flex flex-col items-center gap-1 text-xs font-medium transition-all duration-200 relative z-10 ${
+                              selectedTimeOfDay === timeOption.name 
+                                ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white border-0 shadow-lg' 
+                                : 'border-gray-300 hover:border-purple-300 hover:bg-purple-50'
+                            }`}
+                          >
+                            <span className="text-lg">{timeOption.emoji}</span>
+                            <span>{timeOption.name}</span>
                           </Button>
                         ))}
                       </div>
