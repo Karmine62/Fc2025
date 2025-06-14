@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Camera, ShoppingBag, Plus, Heart, Search, Bot, Download, QrCode, Store, Trash, Eye, Share, CreditCard, User, Palette, Sparkles, Zap, Crown } from "lucide-react";
+import { Camera, ShoppingBag, Plus, Heart, Search, Bot, Download, QrCode, Store, Trash, Eye, Share, CreditCard, User, Palette, Sparkles, Zap, Crown, Album } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -154,6 +154,10 @@ const Dashboard = () => {
             <Button variant="ghost" className="w-full justify-start h-12 rounded-xl hover:bg-gray-100/50 text-gray-700">
               <User className="w-5 h-5 mr-3" />
               Account Settings
+            </Button>
+            <Button variant="ghost" className="w-full justify-start h-12 rounded-xl hover:bg-gray-100/50 text-gray-700">
+              <Album className="w-5 h-5 mr-3" />
+              Photo Dumps
             </Button>
             <Button variant="ghost" className="w-full justify-start h-12 rounded-xl hover:bg-gray-100/50 text-gray-700">
               <ShoppingBag className="w-5 h-5 mr-3" />
