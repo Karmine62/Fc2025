@@ -284,11 +284,70 @@ const Dashboard = () => {
                     {/* Upload Section */}
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-3">Upload Your Face</label>
-                      <div className="border-2 border-dashed border-gray-300 rounded-2xl p-8 text-center hover:border-purple-400 transition-colors cursor-pointer bg-gradient-to-br from-purple-50/50 to-pink-50/50">
-                        <Camera className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                        <p className="text-gray-700 font-medium">Click to upload or drag and drop</p>
-                        <p className="text-gray-500 text-sm mt-1">PNG, JPG up to 10MB</p>
+                      
+                      {/* Upload Method Toggle */}
+                      <div className="flex space-x-2 mb-4">
+                        <Button
+                          variant={uploadMethod === 'manual' ? 'default' : 'outline'}
+                          onClick={() => setUploadMethod('manual')}
+                          className={`flex-1 h-10 rounded-xl text-sm font-medium transition-all duration-200 ${
+                            uploadMethod === 'manual' 
+                              ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white border-0' 
+                              : 'border-gray-300 hover:border-purple-300 hover:bg-purple-50'
+                          }`}
+                        >
+                          <Camera className="w-4 h-4 mr-2" />
+                          Upload Photo
+                        </Button>
+                        <Button
+                          variant={uploadMethod === 'qr' ? 'default' : 'outline'}
+                          onClick={() => setUploadMethod('qr')}
+                          className={`flex-1 h-10 rounded-xl text-sm font-medium transition-all duration-200 ${
+                            uploadMethod === 'qr' 
+                              ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white border-0' 
+                              : 'border-gray-300 hover:border-purple-300 hover:bg-purple-50'
+                          }`}
+                        >
+                          <QrCode className="w-4 h-4 mr-2" />
+                          Scan QR
+                        </Button>
                       </div>
+
+                      {uploadMethod === 'manual' ? (
+                        <div className="border-2 border-dashed border-gray-300 rounded-2xl p-8 text-center hover:border-purple-400 transition-colors cursor-pointer bg-gradient-to-br from-purple-50/50 to-pink-50/50">
+                          <Camera className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                          <p className="text-gray-700 font-medium">Click to upload or drag and drop</p>
+                          <p className="text-gray-500 text-sm mt-1">PNG, JPG up to 10MB</p>
+                        </div>
+                      ) : (
+                        <div className="border-2 border-dashed border-gray-300 rounded-2xl p-8 text-center bg-gradient-to-br from-purple-50/50 to-pink-50/50">
+                          <div className="flex flex-col items-center">
+                            {/* Mock QR Code */}
+                            <div className="w-32 h-32 bg-white rounded-xl shadow-lg p-4 mb-4 border border-gray-200">
+                              <div className="w-full h-full bg-gray-900 rounded-lg relative overflow-hidden">
+                                {/* QR Code Pattern */}
+                                <div className="absolute inset-0 grid grid-cols-8 grid-rows-8 gap-px p-1">
+                                  {Array.from({ length: 64 }).map((_, i) => (
+                                    <div
+                                      key={i}
+                                      className={`${
+                                        Math.random() > 0.5 ? 'bg-white' : 'bg-gray-900'
+                                      } rounded-sm`}
+                                    />
+                                  ))}
+                                </div>
+                                {/* Corner squares */}
+                                <div className="absolute top-1 left-1 w-6 h-6 bg-white rounded border border-gray-900"></div>
+                                <div className="absolute top-1 right-1 w-6 h-6 bg-white rounded border border-gray-900"></div>
+                                <div className="absolute bottom-1 left-1 w-6 h-6 bg-white rounded border border-gray-900"></div>
+                              </div>
+                            </div>
+                            <QrCode className="w-8 h-8 text-gray-400 mb-3" />
+                            <p className="text-gray-700 font-medium">Scan QR code with your phone</p>
+                            <p className="text-gray-500 text-sm mt-1">Take a photo and it will sync automatically</p>
+                          </div>
+                        </div>
+                      )}
                     </div>
 
                     {/* Prompt Input */}
