@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Camera, ShoppingBag, Plus, Heart, Search, Settings, Grid3X3, Download, QrCode, Store, Trash, Eye, Share, CreditCard, User, Palette, Sparkles, Zap } from "lucide-react";
 import { Card } from "@/components/ui/card";
@@ -216,21 +215,21 @@ const Dashboard = () => {
                 className="flex items-center space-x-3 py-3 rounded-xl data-[state=active]:bg-white data-[state=active]:shadow-md transition-all duration-200"
               >
                 <Grid3X3 className="w-5 h-5" />
-                <span className="font-medium">PHOTOS</span>
+                <span className="font-medium">GENERATE</span>
               </TabsTrigger>
               <TabsTrigger 
                 value="my-photos" 
                 className="flex items-center space-x-3 py-3 rounded-xl data-[state=active]:bg-white data-[state=active]:shadow-md transition-all duration-200"
               >
                 <Camera className="w-5 h-5" />
-                <span className="font-medium">REELS</span>
+                <span className="font-medium">PHOTOS</span>
               </TabsTrigger>
               <TabsTrigger 
                 value="store" 
                 className="flex items-center space-x-3 py-3 rounded-xl data-[state=active]:bg-white data-[state=active]:shadow-md transition-all duration-200"
               >
                 <Store className="w-5 h-5" />
-                <span className="font-medium">TAGGED</span>
+                <span className="font-medium">FOR YOU</span>
               </TabsTrigger>
             </TabsList>
 
