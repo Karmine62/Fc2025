@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Camera, ShoppingBag, Image, User, Plus, Heart, Search, Settings, Grid3X3, Users, Download, QrCode } from "lucide-react";
+import { Camera, ShoppingBag, Image, User, Plus, Heart, Search, Settings, Grid3X3, Users, Download, QrCode, Store } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -104,23 +104,23 @@ const Dashboard = () => {
           </div>
 
           {/* Instagram-style Tabs */}
-          <Tabs defaultValue="photos" className="w-full">
+          <Tabs defaultValue="generator" className="w-full">
             <TabsList className="grid w-full grid-cols-3 bg-transparent border-b border-gray-700 rounded-none h-auto p-0">
-              <TabsTrigger value="photos" className="flex items-center space-x-2 py-3 border-b-2 border-transparent data-[state=active]:border-white bg-transparent">
+              <TabsTrigger value="generator" className="flex items-center space-x-2 py-3 border-b-2 border-transparent data-[state=active]:border-white bg-transparent">
                 <Grid3X3 className="w-4 h-4" />
-                <span>PHOTOS</span>
+                <span>GENERATOR</span>
               </TabsTrigger>
-              <TabsTrigger value="favorites" className="flex items-center space-x-2 py-3 border-b-2 border-transparent data-[state=active]:border-white bg-transparent">
+              <TabsTrigger value="my-photos" className="flex items-center space-x-2 py-3 border-b-2 border-transparent data-[state=active]:border-white bg-transparent">
                 <Heart className="w-4 h-4" />
-                <span>FAVORITES</span>
+                <span>MY PHOTOS</span>
               </TabsTrigger>
-              <TabsTrigger value="packs" className="flex items-center space-x-2 py-3 border-b-2 border-transparent data-[state=active]:border-white bg-transparent">
-                <Users className="w-4 h-4" />
-                <span>PACKS</span>
+              <TabsTrigger value="store" className="flex items-center space-x-2 py-3 border-b-2 border-transparent data-[state=active]:border-white bg-transparent">
+                <Store className="w-4 h-4" />
+                <span>STORE</span>
               </TabsTrigger>
             </TabsList>
 
-            <TabsContent value="photos" className="mt-8">
+            <TabsContent value="generator" className="mt-8">
               {/* Generator Section */}
               <Card className="bg-gray-800 border-gray-700 p-6">
                 <h3 className="text-lg font-semibold mb-4">Create New Selfie</h3>
@@ -204,17 +204,17 @@ const Dashboard = () => {
               </Card>
             </TabsContent>
 
-            <TabsContent value="favorites" className="mt-8">
+            <TabsContent value="my-photos" className="mt-8">
               <div className="text-center py-12">
                 <Heart className="w-12 h-12 text-gray-500 mx-auto mb-4" />
-                <p className="text-gray-400">No favorite photos yet</p>
+                <p className="text-gray-400">No photos yet</p>
               </div>
             </TabsContent>
 
-            <TabsContent value="packs" className="mt-8">
+            <TabsContent value="store" className="mt-8">
               <div className="text-center py-12">
-                <Users className="w-12 h-12 text-gray-500 mx-auto mb-4" />
-                <p className="text-gray-400">No packs yet</p>
+                <Store className="w-12 h-12 text-gray-500 mx-auto mb-4" />
+                <p className="text-gray-400">Store coming soon</p>
               </div>
             </TabsContent>
           </Tabs>
