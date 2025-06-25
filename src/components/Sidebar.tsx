@@ -1,6 +1,6 @@
-
 import { useState } from "react";
-import { ChevronRight, HomeIcon, Users, Video, Image, Edit, Palette, Grid, LayoutGrid, Rss, Code, ChevronDown, BookOpen, HelpCircle, Sparkles, Palette as ThemeIcon, Newspaper, Clock, Bookmark, Heart, Album, Boxes } from "lucide-react";
+import { ChevronRight, HomeIcon, Users, Video, Image, Edit, Palette, Grid, LayoutGrid, Rss, Code, ChevronDown, BookOpen, HelpCircle, Sparkles, Palette as ThemeIcon, Newspaper, Clock, Bookmark, Heart, Album, Boxes, Crown } from "lucide-react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 type SidebarItemProps = {
   icon: React.ReactNode;
@@ -49,11 +49,15 @@ const DropdownItem = ({ icon, label, isExternal = false, isActive = false, onCli
 );
 
 export const Sidebar = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [resourcesOpen, setResourcesOpen] = useState(false);
   const [myStuffOpen, setMyStuffOpen] = useState(false);
-  const [activeItem, setActiveItem] = useState("Home");
-  const [activeDropdownItem, setActiveDropdownItem] = useState("");
+
+  const handleNavigation = (path: string) => {
+    navigate(path);
+  };
 
   if (isCollapsed) {
     return (
@@ -86,67 +90,62 @@ export const Sidebar = () => {
         </button>
       </div>
 
+      {/* Upgrade Plan Button */}
+      <div className="p-3">
+        <button
+          onClick={() => handleNavigation('/upgrade-plan')}
+          className={`w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white rounded-xl py-2.5 px-4 font-medium flex items-center justify-center gap-2 transition-all duration-200 ${
+            location.pathname === '/upgrade-plan' ? 'ring-2 ring-purple-400' : ''
+          }`}
+        >
+          <Crown size={18} />
+          Upgrade Plan
+        </button>
+      </div>
+
       <div className="py-2 px-3 flex flex-col gap-1">
         <SidebarItem 
           icon={<HomeIcon size={20} />} 
           label="Home" 
-          isActive={activeItem === "Home"}
-          onClick={() => setActiveItem("Home")}
+          isActive={location.pathname === '/'}
+          onClick={() => handleNavigation('/')}
         />
         <SidebarItem 
           icon={<Users size={20} />} 
           label="Characters" 
           isNew 
-          isActive={activeItem === "Characters"}
-          onClick={() => setActiveItem("Characters")}
-        />
-        <SidebarItem 
-          icon={<Video size={20} />} 
-          label="Videos" 
-          isActive={activeItem === "Videos"}
-          onClick={() => setActiveItem("Videos")}
+          isActive={location.pathname === '/characters'}
+          onClick={() => handleNavigation('/characters')}
         />
         <SidebarItem 
           icon={<Image size={20} />} 
           label="Create Image" 
-          isActive={activeItem === "Create Image"}
-          onClick={() => setActiveItem("Create Image")}
+          isActive={location.pathname === '/create'}
+          onClick={() => handleNavigation('/create')}
         />
         <SidebarItem 
           icon={<Edit size={20} />} 
           label="Edit Image" 
-          isActive={activeItem === "Edit Image"}
-          onClick={() => setActiveItem("Edit Image")}
+          isActive={location.pathname === '/edit'}
+          onClick={() => handleNavigation('/edit')}
         />
         <SidebarItem 
           icon={<Palette size={20} />} 
-          label="Style Palettes" 
-          isActive={activeItem === "Style Palettes"}
-          onClick={() => setActiveItem("Style Palettes")}
+          label="Style Profile" 
+          isActive={location.pathname === '/style-profile'}
+          onClick={() => handleNavigation('/style-profile')}
         />
         <SidebarItem 
           icon={<Grid size={20} />} 
-          label="Models" 
-          isActive={activeItem === "Models"}
-          onClick={() => setActiveItem("Models")}
+          label="Photo Dumps" 
+          isActive={location.pathname === '/photo-dumps'}
+          onClick={() => handleNavigation('/photo-dumps')}
         />
         <SidebarItem 
           icon={<LayoutGrid size={20} />} 
-          label="Apps" 
-          isActive={activeItem === "Apps"}
-          onClick={() => setActiveItem("Apps")}
-        />
-        <SidebarItem 
-          icon={<Rss size={20} />} 
-          label="Community Feed" 
-          isActive={activeItem === "Community Feed"}
-          onClick={() => setActiveItem("Community Feed")}
-        />
-        <SidebarItem 
-          icon={<Code size={20} />} 
-          label="ComfyUI Workflows" 
-          isActive={activeItem === "ComfyUI Workflows"}
-          onClick={() => setActiveItem("ComfyUI Workflows")}
+          label="Store" 
+          isActive={location.pathname === '/store'}
+          onClick={() => handleNavigation('/store')}
         />
       </div>
 
@@ -155,12 +154,9 @@ export const Sidebar = () => {
           <SidebarItem 
             icon={myStuffOpen ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
             label="My stuff" 
-            isActive={activeItem === "My stuff"}
+            isActive={location.pathname.startsWith('/my')}
             hasDropdown
-            onClick={() => {
-              setMyStuffOpen(!myStuffOpen);
-              setActiveItem("My stuff");
-            }}
+            onClick={() => setMyStuffOpen(!myStuffOpen)}
           />
 
           {myStuffOpen && (
@@ -168,32 +164,20 @@ export const Sidebar = () => {
               <DropdownItem 
                 icon={<Clock size={16} />} 
                 label="Creation History" 
-                isActive={activeDropdownItem === "Creation History"}
-                onClick={() => setActiveDropdownItem("Creation History")}
+                isActive={location.pathname === '/my/history'}
+                onClick={() => handleNavigation('/my/history')}
               />
               <DropdownItem 
                 icon={<Bookmark size={16} />} 
                 label="Bookmarks" 
-                isActive={activeDropdownItem === "Bookmarks"}
-                onClick={() => setActiveDropdownItem("Bookmarks")}
+                isActive={location.pathname === '/my/bookmarks'}
+                onClick={() => handleNavigation('/my/bookmarks')}
               />
               <DropdownItem 
                 icon={<Heart size={16} />} 
                 label="Liked" 
-                isActive={activeDropdownItem === "Liked"}
-                onClick={() => setActiveDropdownItem("Liked")}
-              />
-              <DropdownItem 
-                icon={<Album size={16} />} 
-                label="Saved Albums" 
-                isActive={activeDropdownItem === "Saved Albums"}
-                onClick={() => setActiveDropdownItem("Saved Albums")}
-              />
-              <DropdownItem 
-                icon={<Boxes size={16} />} 
-                label="Trained Models" 
-                isActive={activeDropdownItem === "Trained Models"}
-                onClick={() => setActiveDropdownItem("Trained Models")}
+                isActive={location.pathname === '/my/liked'}
+                onClick={() => handleNavigation('/my/liked')}
               />
             </div>
           )}
@@ -204,11 +188,8 @@ export const Sidebar = () => {
             icon={resourcesOpen ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
             label="Resources" 
             hasDropdown
-            isActive={activeItem === "Resources"}
-            onClick={() => {
-              setResourcesOpen(!resourcesOpen);
-              setActiveItem("Resources");
-            }}
+            isActive={location.pathname.startsWith('/resources')}
+            onClick={() => setResourcesOpen(!resourcesOpen)}
           />
           
           {resourcesOpen && (
@@ -216,40 +197,14 @@ export const Sidebar = () => {
               <DropdownItem 
                 icon={<BookOpen size={16} />} 
                 label="Tutorials" 
-                isActive={activeDropdownItem === "Tutorials"}
-                onClick={() => setActiveDropdownItem("Tutorials")}
-              />
-              <DropdownItem 
-                icon={<HelpCircle size={16} />} 
-                label="Wiki" 
-                isExternal 
-                isActive={activeDropdownItem === "Wiki"}
-                onClick={() => setActiveDropdownItem("Wiki")}
+                isActive={location.pathname === '/resources/tutorials'}
+                onClick={() => handleNavigation('/resources/tutorials')}
               />
               <DropdownItem 
                 icon={<HelpCircle size={16} />} 
                 label="Help Center" 
-                isActive={activeDropdownItem === "Help Center"}
-                onClick={() => setActiveDropdownItem("Help Center")}
-              />
-              <DropdownItem 
-                icon={<Sparkles size={16} />} 
-                label="What's New" 
-                isActive={activeDropdownItem === "What's New"}
-                onClick={() => setActiveDropdownItem("What's New")}
-              />
-              <DropdownItem 
-                icon={<ThemeIcon size={16} />} 
-                label="Theme Gallery" 
-                isActive={activeDropdownItem === "Theme Gallery"}
-                onClick={() => setActiveDropdownItem("Theme Gallery")}
-              />
-              <DropdownItem 
-                icon={<Newspaper size={16} />} 
-                label="Blog" 
-                isExternal 
-                isActive={activeDropdownItem === "Blog"}
-                onClick={() => setActiveDropdownItem("Blog")}
+                isActive={location.pathname === '/resources/help'}
+                onClick={() => handleNavigation('/resources/help')}
               />
             </div>
           )}
@@ -258,3 +213,5 @@ export const Sidebar = () => {
     </div>
   );
 };
+
+export default Sidebar;
