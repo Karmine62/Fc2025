@@ -24,9 +24,7 @@ const Store = () => {
       id: 1,
       name: "Starter Pack",
       credits: 50,
-      price: 9.99,
-      originalPrice: 14.99,
-      savings: "33% OFF",
+      price: 2.99,
       popular: false,
       features: ["50 AI generations", "All basic scenes", "Standard support"]
     },
@@ -34,9 +32,7 @@ const Store = () => {
       id: 2,
       name: "Pro Pack",
       credits: 150,
-      price: 24.99,
-      originalPrice: 44.99,
-      savings: "44% OFF",
+      price: 7.99,
       popular: true,
       features: ["150 AI generations", "Premium scenes", "Priority support",]
     },
@@ -44,9 +40,7 @@ const Store = () => {
       id: 3,
       name: "Ultimate Pack",
       credits: 500,
-      price: 69.99,
-      originalPrice: 149.99,
-      savings: "53% OFF",
+      price: 9.99,
       popular: false,
       features: ["500 AI generations", "All scenes + custom", "VIP support",]
     }
@@ -59,8 +53,6 @@ const Store = () => {
       name: "Nightlife Collection",
       photoCount: 12,
       price: 4.99,
-      originalPrice: null,
-      savings: "Just Added",
       description: "for dating apps and social media",
       scenes: ["Club", "Bar", "Rooftop", "Street"]
     },
@@ -69,8 +61,6 @@ const Store = () => {
       name: "Gym & Fitness",
       photoCount: 8,
       price: 4.99,
-      originalPrice: null,
-      savings: "New",
       description: "Show off your gains and lifestyle",
       scenes: ["Gym", "Mirror", "Outdoor", "Studio"]
     },
@@ -79,8 +69,6 @@ const Store = () => {
       name: "Travel Vibes",
       photoCount: 15,
       price: 4.99,
-      originalPrice: null,
-      savings: "New",
       description: "From beaches to cityscapes",
       scenes: ["Beach", "City", "Mountains", "Cafe"]
     },
@@ -89,8 +77,6 @@ const Store = () => {
       name: "Business Professional",
       photoCount: 10,
       price: 6.99,
-      originalPrice: null,
-      savings: "New",
       description: "Perfect for LinkedIn and job profiles",
       scenes: ["Office", "Meeting", "Coffee Shop", "Outdoor"]
     },
@@ -99,8 +85,6 @@ const Store = () => {
       name: "Lifestyle Mix",
       photoCount: 20,
       price: 6.99,
-      originalPrice: null,
-      savings: "New",
       description: "Versatile collection for all platforms",
       scenes: ["Studio", "Outdoor", "Indoor", "Social"]
     },
@@ -109,8 +93,6 @@ const Store = () => {
       name: "Premium Collection",
       photoCount: 25,
       price: 6.99,
-      originalPrice: null,
-      savings: "New",
       description: "Our most comprehensive pack",
       scenes: ["All scenes included", "Custom requests",]
     }
@@ -223,12 +205,8 @@ const Store = () => {
                       <Zap className="w-8 h-8 text-white" />
                     </div>
                     <h3 className="text-xl font-bold text-white mb-2">{pkg.name}</h3>
-                    <div className="flex items-center justify-center gap-2 mb-3">
+                    <div className="flex items-center justify-center mb-3">
                       <span className="text-3xl font-bold text-white">${pkg.price}</span>
-                      <span className="text-white/50 line-through">${pkg.originalPrice}</span>
-                      <Badge className="bg-green-500/20 text-green-400 border border-green-500/30 px-2 py-1 text-xs">
-                        {pkg.savings}
-                      </Badge>
                     </div>
                     <div className="text-2xl font-bold bg-gradient-to-r from-yellow-400 via-orange-500 via-pink-500 to-purple-600 bg-clip-text text-transparent">
                       {pkg.credits} Credits
@@ -319,13 +297,7 @@ const Store = () => {
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-2">
                       <span className="text-2xl font-bold text-white">${pack.price}</span>
-                      {pack.originalPrice && (
-                        <span className="text-white/50 line-through">${pack.originalPrice}</span>
-                      )}
                     </div>
-                    <Badge className="bg-green-500/20 text-green-400 border border-green-500/30 px-2 py-1 text-xs hover:bg-green-500/20">
-                      {pack.savings}
-                    </Badge>
                   </div>
                 </div>
 

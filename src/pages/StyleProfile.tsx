@@ -220,7 +220,7 @@ const StyleProfile = () => {
                 <h1 className="text-2xl font-bold text-white">Style Profile Settings</h1>
                 <p className="text-white/80">
                   {isOnboarding 
-                    ? "Step 1: Help us understand your style to generate better AI photos" 
+                    ? "Help us understand your style to generate better AI photos" 
                     : "Help us understand your style to generate better AI photos"
                   }
                 </p>

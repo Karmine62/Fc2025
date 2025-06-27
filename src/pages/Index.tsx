@@ -12,6 +12,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useUser } from "@/contexts/UserContext";
 import { validateEmail } from "@/utils/emailValidation";
+import LandingPaymentModal from "@/components/LandingPaymentModal";
 
 // Different placeholder images for before/after states
 const beforeImage1 = "/images/peel-1/peel-blue.webp";
@@ -181,6 +182,13 @@ const Index = () => {
   const [emailError, setEmailError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   
+  // Payment modal state
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState<{
+    name: string;
+    price: string;
+  } | null>(null);
+  
   const comparison1 = useImageComparison();
   const comparison2 = useImageComparison();
   const comparison3 = useImageComparison();
@@ -209,18 +217,33 @@ const Index = () => {
     
     setIsSubmitting(true);
     
-    try {
-      // Store email in context
+    // Simulate API call
+    setTimeout(() => {
       setEmail(emailInput);
       setOnboardingStep('style-profile');
-      
-      // Navigate to style profile
       navigate('/style-profile');
-    } catch (error) {
-      setEmailError('Something went wrong. Please try again.');
-    } finally {
       setIsSubmitting(false);
+    }, 1000);
+  };
+
+  const handlePlanSelect = (planName: string, planPrice: string) => {
+    if (planName === "Free") {
+      // Handle free plan - redirect to onboarding
+      setEmail('');
+      setOnboardingStep('style-profile');
+      navigate('/style-profile');
+    } else {
+      // Handle paid plans - open payment modal
+      setSelectedPlan({ name: planName, price: planPrice });
+      setIsPaymentModalOpen(true);
     }
+  };
+
+  const handlePaymentConfirm = (email: string) => {
+    // Set the email and redirect to onboarding
+    setEmail(email);
+    setOnboardingStep('style-profile');
+    navigate('/style-profile');
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -904,7 +927,12 @@ const Index = () => {
                     </ul>
                   </div>
                   <div className="mt-auto w-full">
-                    <Button className="w-full bg-gradient-to-r from-yellow-400 via-orange-500 via-pink-500 to-purple-600">{plan.cta}</Button>
+                    <Button 
+                      className="w-full bg-gradient-to-r from-yellow-400 via-orange-500 via-pink-500 to-purple-600"
+                      onClick={() => handlePlanSelect(plan.title, plan.price)}
+                    >
+                      {plan.cta}
+                    </Button>
                   </div>
                 </div>
               ))}
@@ -928,6 +956,17 @@ const Index = () => {
           </footer>
         </div>
       </div>
+
+      {/* Landing Payment Modal */}
+      {selectedPlan && (
+        <LandingPaymentModal
+          isOpen={isPaymentModalOpen}
+          onClose={() => setIsPaymentModalOpen(false)}
+          planName={selectedPlan.name}
+          planPrice={selectedPlan.price}
+          onConfirmPayment={handlePaymentConfirm}
+        />
+      )}
     </div>
   );
 };

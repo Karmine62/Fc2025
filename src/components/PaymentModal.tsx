@@ -63,7 +63,7 @@ const PaymentModal = ({
               </div>
               <div className="text-right">
                 <p className="text-white font-bold text-xl">${planPrice}</p>
-                <p className="text-white/70 text-sm">one time fee</p>
+                <p className="text-white/70 text-sm">monthly fee</p>
               </div>
             </div>
           </Card>

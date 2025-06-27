@@ -33,6 +33,7 @@ const Dashboard = () => {
 
   // Carousel state
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [currentStyleSlide, setCurrentStyleSlide] = useState(0);
 
   // Modal state
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
@@ -73,6 +74,19 @@ const Dashboard = () => {
     setCurrentSlide(slideIndex);
   };
 
+  // Style carousel navigation functions
+  const nextStyleSlide = () => {
+    setCurrentStyleSlide((prev) => (prev + 1) % 5); // 5 total slides (0-4)
+  };
+
+  const prevStyleSlide = () => {
+    setCurrentStyleSlide((prev) => (prev - 1 + 5) % 5); // Handle negative numbers
+  };
+
+  const goToStyleSlide = (slideIndex: number) => {
+    setCurrentStyleSlide(slideIndex);
+  };
+
   // Mock data
   const userStats = {
     credits: 45,
@@ -82,45 +96,141 @@ const Dashboard = () => {
     following: 892
   };
 
-  // Style options with enhanced information
+  // Style options with enhanced information (20 total styles)
   const styleOptions = [
+    // Slide 1 (Styles 1-4)
     {
-      name: 'Timothée Chalamet',
-      description: 'Sophisticated, artistic, and effortlessly cool',
-      bestFor: 'Creative profiles, artistic dating apps',
-      tips: 'Perfect for showcasing your artistic side and intellectual interests'
-    },
-    {
-      name: 'Zendaya',
-      description: 'Confident, stylish, and fashion-forward',
-      bestFor: 'Fashion-focused profiles, Instagram',
-      tips: 'Great for highlighting your sense of style and confidence'
-    },
-    {
-      name: 'Ryan Gosling',
-      description: 'Classic, charming, and timeless appeal',
-      bestFor: 'Traditional dating apps, professional settings',
-      tips: 'Ideal for creating a trustworthy and approachable image'
-    },
-    {
-      name: 'Emma Stone',
-      description: 'Warm, approachable, and naturally beautiful',
-      bestFor: 'Friendly dating apps, social media',
-      tips: 'Perfect for creating a warm and inviting first impression'
-    },
-    {
-      name: 'Michael B. Jordan',
+      name: 'Edgar Cut',
       description: 'Strong, confident, and charismatic',
       bestFor: 'Confidence-building profiles, fitness apps',
       tips: 'Excellent for showcasing strength and determination'
     },
     {
-      name: 'Margot Robbie',
+      name: 'Low Taper Fade',
       description: 'Elegant, sophisticated, and magnetic',
       bestFor: 'High-end dating apps, professional networking',
       tips: 'Ideal for creating an elegant and sophisticated presence'
+    },
+    {
+      name: 'Line Up Fade',
+      description: 'Youthful, energetic, and approachable',
+      bestFor: 'Younger demographics, casual dating apps',
+      tips: 'Great for showing your fun and energetic personality'
+    },
+    {
+      name: 'Middle Part',
+      description: 'Bold, artistic, and unapologetically unique',
+      bestFor: 'Creative platforms, artistic communities',
+      tips: 'Perfect for expressing your unique artistic vision'
+    },
+    // Slide 2 (Styles 5-8)
+    {
+      name: 'IShowSpeed',
+      description: 'Sophisticated, artistic, and effortlessly cool',
+      bestFor: 'Creative profiles, artistic dating apps',
+      tips: 'Perfect for showcasing your artistic side and intellectual interests'
+    },
+    {
+      name: 'Timothée Chalamet',
+      description: 'Confident, stylish, and fashion-forward',
+      bestFor: 'Fashion-focused profiles, Instagram',
+      tips: 'Great for highlighting your sense of style and confidence'
+    },
+    {
+      name: 'Shohei Ohtani',
+      description: 'Classic, charming, and timeless appeal',
+      bestFor: 'Traditional dating apps, professional settings',
+      tips: 'Ideal for creating a trustworthy and approachable image'
+    },
+    {
+      name: 'Drake',
+      description: 'Warm, approachable, and naturally beautiful',
+      bestFor: 'Friendly dating apps, social media',
+      tips: 'Perfect for creating a warm and inviting first impression'
+    },
+    // Slide 3 (Styles 9-12)
+    {
+      name: 'Luka Sabbat',
+      description: 'Strong, classic, and gentlemanly',
+      bestFor: 'Traditional dating, professional networking',
+      tips: 'Ideal for creating a strong, reliable impression'
+    },
+    {
+      name: 'Morgan Wallen',
+      description: 'Elegant, mysterious, and captivating',
+      bestFor: 'Sophisticated dating apps, high-end platforms',
+      tips: 'Great for creating an air of mystery and sophistication'
+    },
+    {
+      name: 'Johnny Depp',
+      description: 'Rockstar energy with modern edge',
+      bestFor: 'Music scenes, creative dating apps',
+      tips: 'Perfect for showcasing your edgy, artistic side'
+    },
+    {
+      name: 'Paul Walker',
+      description: 'Confident, bold, and trendsetting',
+      bestFor: 'Fashion-forward platforms, Instagram',
+      tips: 'Ideal for showing your confidence and style'
+    },
+    // Slide 4 (Styles 13-16)
+    {
+      name: 'Chief Keef',
+      description: 'Tall, dark, and mysterious',
+      bestFor: 'Dramatic profiles, artistic dating apps',
+      tips: 'Great for creating an intense, mysterious vibe'
+    },
+    {
+      name: 'Duke Dennis',
+      description: 'Gothic, edgy, and alternative',
+      bestFor: 'Alternative communities, creative platforms',
+      tips: 'Perfect for expressing your unique, alternative style'
+    },
+    {
+      name: 'J Cole',
+      description: 'Sensitive, artistic, and emotionally intelligent',
+      bestFor: 'Deep connection dating apps, artistic communities',
+      tips: 'Ideal for showing emotional depth and sensitivity'
+    },
+    {
+      name: 'Ja Morant',
+      description: 'Bold, artistic, and unapologetically unique',
+      bestFor: 'Creative platforms, artistic communities',
+      tips: 'Perfect for expressing your unique artistic vision'
+    },
+    // Slide 5 (Styles 17-20)
+    {
+      name: 'A$AP Rocky',
+      description: 'Intense, mysterious, and captivating',
+      bestFor: 'Dramatic profiles, artistic dating apps',
+      tips: 'Great for creating an intense, mysterious presence'
+    },
+    {
+      name: 'Allen Iverson',
+      description: 'Witty, confident, and authentically cool',
+      bestFor: 'Comedy scenes, creative dating apps',
+      tips: 'Perfect for showing your humor and authenticity'
+    },
+    {
+      name: 'LaMelo Ball',
+      description: 'Rugged, authentic, and working-class cool',
+      bestFor: 'Authentic dating apps, creative communities',
+      tips: 'Ideal for showing your authentic, down-to-earth side'
+    },
+    {
+      name: 'Jalen Hurts',
+      description: 'Fresh, optimistic, and full of life',
+      bestFor: 'Young dating apps, optimistic communities',
+      tips: 'Great for showing your youthful energy and optimism'
     }
   ];
+
+  // Get current style slide options (4 styles per slide)
+  const getCurrentStyleSlideOptions = () => {
+    const startIndex = currentStyleSlide * 4;
+    const endIndex = startIndex + 4;
+    return styleOptions.slice(startIndex, endIndex);
+  };
 
   // All scenes data (100 total scenes)
   const allScenes = [
@@ -754,9 +864,38 @@ const Dashboard = () => {
                   {/* Style Selector with Instructions */}
                   <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <div className="lg:col-span-2">
-                      <label className="block text-sm font-semibold text-white mb-3">Choose Your Look</label>
+                      <div className="flex items-center justify-between mb-3">
+                        <label className="block text-sm font-semibold text-white">Choose Your Look</label>
+                        <div className="flex items-center gap-2">
+                          <Button
+                            onClick={prevStyleSlide}
+                            className="w-8 h-8 p-0 bg-white/10 hover:bg-white/20 text-white border border-white/20 rounded-lg"
+                          >
+                            ←
+                          </Button>
+                          <div className="flex gap-1">
+                            {Array.from({ length: 5 }, (_, i) => (
+                              <button
+                                key={i}
+                                onClick={() => goToStyleSlide(i)}
+                                className={`w-2 h-2 rounded-full transition-all ${
+                                  currentStyleSlide === i 
+                                    ? 'bg-white' 
+                                    : 'bg-white/30 hover:bg-white/50'
+                                }`}
+                              />
+                            ))}
+                          </div>
+                          <Button
+                            onClick={nextStyleSlide}
+                            className="w-8 h-8 p-0 bg-white/10 hover:bg-white/20 text-white border border-white/20 rounded-lg"
+                          >
+                            →
+                          </Button>
+                        </div>
+                      </div>
                       <div className="grid grid-cols-2 gap-3">
-                        {styleOptions.map((style) => (
+                        {getCurrentStyleSlideOptions().map((style) => (
                           <Button
                             key={style.name}
                             variant={selectedStyle === style.name ? 'default' : 'outline'}
@@ -770,6 +909,10 @@ const Dashboard = () => {
                             {style.name}
                           </Button>
                         ))}
+                      </div>
+                      <div className="flex justify-between items-center mt-3 text-xs text-white/70">
+                        <span>Slide {currentStyleSlide + 1} of 5</span>
+                        <span>{getCurrentStyleSlideOptions().length} styles</span>
                       </div>
                     </div>
                     <div className="bg-gradient-to-br from-purple-50/50 to-pink-50/50 rounded-2xl p-4 border border-purple-200/30">

@@ -37,7 +37,7 @@ const UpgradePlan = () => {
     {
       id: "feed-fixer",
       name: "Feed Fixer",
-      price: "9.99",
+      price: "12.99",
       description: "Most popular for creators",
       features: [
         "15 selfies/month",
@@ -52,7 +52,7 @@ const UpgradePlan = () => {
     {
       id: "profile-optimizer",
       name: "Profile Optimizer",
-      price: "19.99",
+      price: "24.99",
       description: "For serious content creators",
       features: [
         "20 selfies/month",
