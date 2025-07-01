@@ -357,7 +357,7 @@ const Index = () => {
               {/* Right: CTA Box */}
               <div className="flex-1 flex justify-center items-center relative">
                 <div className="rounded-2xl shadow-2xl p-8 w-full max-w-md flex flex-col items-center relative backdrop-blur-md bg-black/10 border border-white/10">
-                  <h3 className="text-2xl font-bold mb-2 text-center text-white underline">Your First 4 Selfies Are Free</h3>
+                  <h3 className="text-2xl font-bold mb-2 text-center text-white underline">Your First 2 Selfies Are Free</h3>
                   <p className="text-white/80 text-center mb-6"> Apply pressure with these on your preferred apps, then circle back for the real thing</p>
                   
                   {/* Email input with glow effect */}
@@ -885,7 +885,7 @@ const Index = () => {
             <p className="mb-8 text-lg text-white/80 max-w-xl text-center">Transform your photos with our flexible pricing options</p>
             <div className="flex flex-wrap gap-8 justify-center">
               {[
-                { title: "Lurker", price: "Free", features: ["4 selfies per month", "4 scenes to choose from", "Hairstyling", "Payment method required"], cta: "Free", highlight: false },
+                { title: "Lurker", price: "Free", features: ["2 free selfies", "6 scenes to choose from", "Hairstyling", "Payment method required"], cta: "Free", highlight: false },
                 { title: "Feed Fixer", price: "$12.99", features: ["15 selfies/month", "Lurker + Feed Fixer scenes", "2 group photos", "Hairstyling, Height and Weight", "1 Photo dump per month", "Buy Scene Packs with credits"], cta: "Choose", highlight: true },
                 { title: "Profile Optimizer", price: "$24.99", features: [
                   "20 selfies/month", 

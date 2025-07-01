@@ -27,8 +27,8 @@ const UpgradePlan = () => {
       price: "Free",
       description: "Perfect for getting started",
       features: [
-        "4 selfies per month",
-        "4 scenes to choose from",
+        "2 selfies per month",
+        "6 scenes to choose from",
         "Hairstyling",
         "Payment method required"
       ],

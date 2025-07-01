@@ -637,7 +637,7 @@ const Dashboard = () => {
                 <div className="flex-1">
                   <h2 className="text-xl font-bold text-white mb-2">Welcome to FinstaCam! 🎉</h2>
                   <p className="text-white/80">
-                    Your account is all set up! You now have access to generate your first 4 free AI selfies. 
+                    Your account is all set up! You now have access to generate your first 2 free AI selfies. 
                     Start by uploading a photo and choosing your preferred style and scene.
                   </p>
                 </div>
