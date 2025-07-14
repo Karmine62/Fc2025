@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinstaCam Mobile</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .camera-container {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            background: #000;
+        }
+
+        #video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .face-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            border: 3px solid rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .face-overlay::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 100px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #333;
+            border: 2px solid #e9ecef;
+        }
+
+        .btn-secondary:hover {
+            background: #e9ecef;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .status {
+            text-align: center;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .status.connected {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status.disconnected {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .preview-container {
+            display: none;
+            margin-bottom: 20px;
+        }
+
+        .preview-container.show {
+            display: block;
+        }
+
+        #preview {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 15px;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        .error.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📸 FinstaCam</h1>
+            <p>Take your perfect selfie</p>
+        </div>
+
+        <div class="status" id="status">
+            Connecting to server...
+        </div>
+
+        <div class="error" id="error"></div>
+
+        <div class="camera-container" id="cameraContainer">
+            <video id="video" autoplay playsinline></video>
+            <div class="face-overlay"></div>
+        </div>
+
+        <div class="preview-container" id="previewContainer">
+            <img id="preview" alt="Captured image">
+        </div>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Sending image...</p>
+        </div>
+
+        <div class="controls">
+            <button class="btn btn-primary" id="captureBtn">📸 Capture</button>
+            <button class="btn btn-secondary" id="retakeBtn" style="display: none;">🔄 Retake</button>
+            <button class="btn btn-danger" id="cancelBtn">❌ Cancel</button>
+        </div>
+    </div>
+
+    <script>
+        const socket = io();
+        let stream = null;
+        let capturedImage = null;
+
+        // DOM elements
+        const video = document.getElementById('video');
+        const captureBtn = document.getElementById('captureBtn');
+        const retakeBtn = document.getElementById('retakeBtn');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const status = document.getElementById('status');
+        const error = document.getElementById('error');
+        const loading = document.getElementById('loading');
+        const previewContainer = document.getElementById('previewContainer');
+        const preview = document.getElementById('preview');
+        const cameraContainer = document.getElementById('cameraContainer');
+
+        // Socket connection handling
+        socket.on('connect', () => {
+            status.textContent = 'Connected to server';
+            status.className = 'status connected';
+            socket.emit('mobile-connect', {
+                userAgent: navigator.userAgent,
+                platform: navigator.platform
+            });
+        });
+
+        socket.on('disconnect', () => {
+            status.textContent = 'Disconnected from server';
+            status.className = 'status disconnected';
+        });
+
+        // Initialize camera
+        async function initCamera() {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({
+                    video: {
+                        facingMode: 'user',
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 }
+                    }
+                });
+                video.srcObject = stream;
+            } catch (err) {
+                showError('Camera access denied. Please allow camera permissions.');
+                console.error('Camera error:', err);
+            }
+        }
+
+        // Show error message
+        function showError(message) {
+            error.textContent = message;
+            error.className = 'error show';
+        }
+
+        // Hide error message
+        function hideError() {
+            error.className = 'error';
+        }
+
+        // Capture image
+        function captureImage() {
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            capturedImage = canvas.toDataURL('image/jpeg', 0.8);
+            preview.src = capturedImage;
+            
+            // Show preview
+            previewContainer.className = 'preview-container show';
+            cameraContainer.style.display = 'none';
+            
+            // Update buttons
+            captureBtn.style.display = 'none';
+            retakeBtn.style.display = 'inline-block';
+        }
+
+        // Retake image
+        function retakeImage() {
+            capturedImage = null;
+            previewContainer.className = 'preview-container';
+            cameraContainer.style.display = 'block';
+            
+            captureBtn.style.display = 'inline-block';
+            retakeBtn.style.display = 'none';
+        }
+
+        // Send image to server
+        function sendImage() {
+            if (!capturedImage) return;
+            
+            loading.className = 'loading show';
+            
+            socket.emit('selfie-captured', {
+                imageData: capturedImage,
+                timestamp: new Date().toISOString()
+            });
+            
+            // Hide loading after a delay (in real app, wait for server confirmation)
+            setTimeout(() => {
+                loading.className = 'loading';
+                retakeImage();
+            }, 2000);
+        }
+
+        // Event listeners
+        captureBtn.addEventListener('click', captureImage);
+        retakeBtn.addEventListener('click', retakeImage);
+        cancelBtn.addEventListener('click', () => {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+            }
+            window.close();
+        });
+
+        // Initialize
+        initCamera();
+    </script>
+</body>
+</html> 
