@@ -12,8 +12,8 @@ import { useUser } from "@/contexts/UserContext";
 import QRCode from 'react-qr-code';
 import { io, Socket } from 'socket.io-client';
 
-const MOBILE_URL = 'http://192.168.0.13:3001/mobile';
-const SOCKET_URL = 'http://192.168.0.13:3001';
+const MOBILE_URL = 'https://fc2025.vercel.app/mobile';
+const SOCKET_URL = 'https://fc2025.onrender.com';
 
 const Dashboard = () => {
   const navigate = useNavigate();
