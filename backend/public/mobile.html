@@ -304,8 +304,8 @@
             const canvas = document.createElement('canvas');
             const context = canvas.getContext('2d');
             
-            canvas.width = 150;   // width in pixels
-            canvas.height = 150;  // height in pixels
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
             
             context.drawImage(video, 0, 0, canvas.width, canvas.height);
             
