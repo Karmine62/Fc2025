@@ -241,6 +241,7 @@
 
         <div class="controls">
             <button class="btn btn-primary" id="captureBtn">📸 Capture</button>
+            <button class="btn btn-success" id="uploadBtn" style="display: none;">⬆️ Upload</button>
             <button class="btn btn-secondary" id="retakeBtn" style="display: none;">🔄 Retake</button>
             <button class="btn btn-danger" id="cancelBtn">❌ Cancel</button>
         </div>
@@ -254,6 +255,7 @@
         // DOM elements
         const video = document.getElementById('video');
         const captureBtn = document.getElementById('captureBtn');
+        const uploadBtn = document.getElementById('uploadBtn');
         const retakeBtn = document.getElementById('retakeBtn');
         const cancelBtn = document.getElementById('cancelBtn');
         const status = document.getElementById('status');
@@ -325,6 +327,7 @@
             
             // Update buttons
             captureBtn.style.display = 'none';
+            uploadBtn.style.display = 'inline-block';
             retakeBtn.style.display = 'inline-block';
         }
 
@@ -335,21 +338,18 @@
             cameraContainer.style.display = 'block';
             
             captureBtn.style.display = 'inline-block';
+            uploadBtn.style.display = 'none';
             retakeBtn.style.display = 'none';
         }
 
-        // Send image to server
-        function sendImage() {
+        // Upload image to server
+        function uploadImage() {
             if (!capturedImage) return;
-            
             loading.className = 'loading show';
-            
             socket.emit('selfie-captured', {
                 imageData: capturedImage,
                 timestamp: new Date().toISOString()
             });
-            
-            // Hide loading after a delay (in real app, wait for server confirmation)
             setTimeout(() => {
                 loading.className = 'loading';
                 retakeImage();
@@ -358,6 +358,7 @@
 
         // Event listeners
         captureBtn.addEventListener('click', captureImage);
+        uploadBtn.addEventListener('click', uploadImage);
         retakeBtn.addEventListener('click', retakeImage);
         cancelBtn.addEventListener('click', () => {
             if (stream) {
