@@ -1111,16 +1111,10 @@ const Dashboard = () => {
                       ) : (
                         <div className="border-2 border-dashed border-gray-300 rounded-2xl p-8 text-center bg-gradient-to-br from-purple-50/50 to-pink-50/50 flex flex-col items-center justify-center">
                           <div className="mb-4">
-                            <QRCode value={MOBILE_URL} size={180} />
+                            <QRCode value={MOBILE_URL} size={70} />
                           </div>
                           <div className="mb-2">
                             <span className="font-semibold text-lg text-gray-800">Scan with your phone</span>
-                          </div>
-                          <div className="mb-2">
-                            <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${qrConnectionStatus === 'connected' ? 'bg-green-100 text-green-700' : qrConnectionStatus === 'connecting' ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-700'}`}>{qrConnectionStatus === 'connected' ? 'Connected' : qrConnectionStatus === 'connecting' ? 'Connecting...' : 'Disconnected'}</span>
-                          </div>
-                          <div className="mb-4">
-                            <span className="text-xs text-gray-500">Or open: <span className="font-mono text-gray-700">{MOBILE_URL}</span></span>
                           </div>
                           {/* Gallery preview (to be expanded) */}
                           {qrImages.length > 0 && (
