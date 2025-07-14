@@ -1116,17 +1116,15 @@ const Dashboard = () => {
                           <div className="mb-2">
                             <span className="font-semibold text-lg text-gray-800">Scan with your phone</span>
                           </div>
-                          {/* Gallery preview (to be expanded) */}
+                          {/* Single image preview */}
                           {qrImages.length > 0 && (
                             <div className="mt-4 w-full">
-                              <div className="font-semibold text-sm text-gray-700 mb-2">Received Images ({qrImages.length})</div>
-                              <div className="grid grid-cols-2 gap-2">
-                                {qrImages.map(img => (
-                                  <div key={img.id} className="relative w-24 h-24 rounded-lg overflow-hidden border border-gray-200">
-                                    <img src={img.imageData} alt="Selfie" className="w-full h-full object-cover" />
-                                    <span className="absolute bottom-1 right-1 bg-black/60 text-white text-[10px] px-1 rounded">{new Date(img.timestamp).toLocaleTimeString()}</span>
-                                  </div>
-                                ))}
+                              <div className="font-semibold text-sm text-gray-700 mb-2">Received Image</div>
+                              <div className="flex justify-center">
+                                <div className="relative w-20 h-20 rounded-lg overflow-hidden border border-gray-200">
+                                  <img src={qrImages[0].imageData} alt="Selfie" className="w-full h-full object-cover" />
+                                  <span className="absolute bottom-1 right-1 bg-black/60 text-white text-[10px] px-1 rounded">{new Date(qrImages[0].timestamp).toLocaleTimeString()}</span>
+                                </div>
                               </div>
                             </div>
                           )}
