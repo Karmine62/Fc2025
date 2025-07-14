@@ -720,10 +720,14 @@ const StyleProfile = () => {
                     Back
                   </Button>
                   <Button
-                    onClick={handleContinueToAccountSettings}
+                    onClick={() => {
+                      // Save form data
+                      console.log('Saving form data:', formData);
+                      // You can add actual save logic here
+                    }}
                     className="px-8 py-3 bg-gradient-to-br from-yellow-400 via-pink-500 to-purple-600 hover:from-yellow-500 hover:via-pink-600 hover:to-purple-700 text-white border-0 shadow-lg"
                   >
-                    Continue to Account Settings
+                    Save
                   </Button>
                 </>
               ) : (

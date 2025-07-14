@@ -24,9 +24,9 @@ const Store = () => {
       id: 1,
       name: "Starter Pack",
       credits: 50,
-      price: 2.99,
+      price: 3.99,
       popular: false,
-      features: ["50 AI generations", "All basic scenes", "Standard support"]
+      features: ["Generate 7 more selfies", "Scenes limited to your plan", "Receive the credits instantly"]
     },
     {
       id: 2,
@@ -34,7 +34,7 @@ const Store = () => {
       credits: 150,
       price: 7.99,
       popular: true,
-      features: ["150 AI generations", "Premium scenes", "Priority support",]
+      features:  ["Generate 10 more selfies", "Scenes limited to your plan", "Receive the credits instantly"]
     },
     {
       id: 3,
@@ -42,7 +42,7 @@ const Store = () => {
       credits: 500,
       price: 9.99,
       popular: false,
-      features: ["500 AI generations", "All scenes + custom", "VIP support",]
+      features:  ["Generate 20 more selfies", "Scenes limited to your plan", "Receive the credits instantly"]
     }
   ];
 

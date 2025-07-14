@@ -120,8 +120,8 @@ const useTiltEffect = () => {
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
     
-    const rotateX = (y - centerY) / 2;
-    const rotateY = (centerX - x) / 2;
+    const rotateX = (y - centerY) / 4; // Reduced from /2 to /4
+    const rotateY = (centerX - x) / 4; // Reduced from /2 to /4
     
     setRotation({ x: rotateX, y: rotateY });
   };
@@ -201,6 +201,8 @@ const Index = () => {
   const engagementCounter = useCounter(55);
   const aiContentCounter = useCounter(80);
   const datingAICounter = useCounter(333);
+
+  const [billingCycle, setBillingCycle] = useState('monthly');
 
   const handleEmailSubmit = async () => {
     setEmailError('');
@@ -797,8 +799,89 @@ const Index = () => {
             </div>
           </section>
 
+          {/* How It Works Section */}
+          <section id="how-it-works" className="w-full py-8 px-4 flex flex-col items-center">
+            <h2 className="text-3xl font-bold mb-6">The FinstaCam Formula</h2>
+            <p className="mb-12 text-lg text-white/80 max-w-xl text-center">Low effort. High impact. Built for feeds, stories, and matches.</p>
+            <div className="flex flex-wrap gap-8 justify-center">
+              <div className="bg-white/10 rounded-2xl p-6 w-80 flex flex-col items-center group hover:bg-white/15 transition-all duration-300">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-400 to-blue-600 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <Palette className="text-white" size={24} />
+                </div>
+                <h4 className="font-semibold mb-2 text-lg">1. Pick the Vibe</h4>
+                <p className="text-white/80 text-sm text-center">Choose from curated scenes like the gym, club, vacation, or shopping district. Decide when and where you want to be seen, and we'll generate hyperrealistic AI selfies that place you right there.</p>
+              </div>
+              <div className="bg-white/10 rounded-2xl p-6 w-80 flex flex-col items-center group hover:bg-white/15 transition-all duration-300">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-r from-pink-400 to-pink-600 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <Scissors className="text-white" size={24} />
+                </div>
+                <h4 className="font-semibold mb-2 text-lg">2. Lock in Your Style</h4>
+                <p className="text-white/80 text-sm text-center">Upload your selfie and select a hairstyle inspo from our library. We will generate a custom AI look that eats on every platform.</p>
+              </div>
+              <div className="bg-white/10 rounded-2xl p-6 w-80 flex flex-col items-center group hover:bg-white/15 transition-all duration-300">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-r from-orange-400 to-red-600 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <Flame className="text-white" size={24} />
+                </div>
+                <h4 className="font-semibold mb-2 text-lg">3. Drop the Heat</h4>
+                <p className="text-white/80 text-sm text-center">Download, post, repeat. From Instagram to Hinge, your FinstaCam photos will do numbers while you do nothing.</p>
+              </div>
+            </div>
+          </section>
+
+          {/* Add spacing between Formula and Comparison Title section */}
+          <div className="h-8 md:h-12" />
+
+          {/* Comparison Title Section */}
+          <div className="w-full flex flex-col items-center mb-0">
+            <h2 className="text-3xl md:text-4xl font-extrabold text-center text-white mb-6">
+              <span className="bg-gradient-to-r from-purple-400 via-pink-500 to-yellow-400 bg-clip-text text-transparent">FinstaCam</span> vs Everyone Else
+            </h2>
+            <p className="text-lg text-white/80 text-center max-w-2xl">See how FinstaCam's ultra-real selfies outmatch basic AI tools and deliver believable content for dating apps, DMs, and your roster.</p>
+          </div>
+
+          {/* Comparison Section */}
+          <section className="w-full py-16 px-4 flex flex-col items-center mt-0">
+            <div className="max-w-6xl w-full flex flex-col items-center">
+              <div className="flex flex-row w-full gap-8 mb-8">
+                {/* FinstaCam Column */}
+                <div className="flex-1 bg-green-500/30 rounded-2xl p-6 flex flex-col items-center border-2 border-green-400">
+                  <h3 className="text-2xl font-bold mb-4 bg-gradient-to-r from-purple-400 via-pink-500 to-yellow-400 bg-clip-text text-transparent">FinstaCam</h3>
+                  <div className="flex gap-4 mb-4 group">
+                    <img src="/images/comp-imgs/us-1.webp" alt="FinstaCam 1" className="rounded-xl w-40 h-52 object-cover hover:scale-105 hover:shadow-lg transition-all duration-300" />
+                    <img src="/images/comp-imgs/us-2.webp" alt="FinstaCam 2" className="rounded-xl w-40 h-52 object-cover hover:scale-105 hover:shadow-lg transition-all duration-300" />
+                    <img src="/images/comp-imgs/us-3.jpg" alt="FinstaCam 3" className="rounded-xl w-40 h-52 object-cover hover:scale-105 hover:shadow-lg transition-all duration-300" />
+                  </div>
+                  <ul className="w-full mt-4 space-y-3">
+                    <li className="flex items-center gap-2 text-white"><span className="text-purple-400 text-xl">✔️</span> Realistic imperfections  skin texture, glare, clutter</li>
+                    <li className="flex items-center gap-2 text-white"><span className="text-purple-400 text-xl">✔️</span> Awkward believable framing, posing, and angles</li>
+                    <li className="flex items-center gap-2 text-white"><span className="text-purple-400 text-xl">✔️</span> Style profiles for accurate appearance & style matching
+                    </li>
+                    <li className="flex items-center gap-2 text-white"><span className="text-purple-400 text-xl">✔️</span> Geo-location based scenes available</li>
+                    <li className="flex items-center gap-2 text-white"><span className="text-purple-400 text-xl">✔️</span> Looks like you took the pic on your actual phone</li>
+                  </ul>
+                </div>
+                {/* Alternatives Column */}
+                <div className="flex-1 bg-red-500/30 rounded-2xl p-6 flex flex-col items-center border-2 border-red-400">
+                  <h3 className="text-2xl font-bold mb-4 text-white/80">Alternatives</h3>
+                  <div className="flex gap-4 mb-4 group">
+                    <img src="/images/comp-imgs/them-1.jpg" alt="Alt 1" className="rounded-xl w-40 h-52 object-cover hover:scale-105 hover:shadow-lg transition-all duration-300" />
+                    <img src="/images/comp-imgs/them-2.jpg" alt="Alt 2" className="rounded-xl w-40 h-52 object-cover hover:scale-105 hover:shadow-lg transition-all duration-300" />
+                    <img src="/images/comp-imgs/them-3.jpg" alt="Alt 3" className="rounded-xl w-40 h-52 object-cover hover:scale-105 hover:shadow-lg transition-all duration-300" />
+                  </div>
+                  <ul className="w-full mt-4 space-y-3">
+                    <li className="flex items-center gap-2 text-white/80"><span className="text-red-400 text-xl">✖️</span> Overly smooth, airbrushed, obviously fake results</li>
+                    <li className="flex items-center gap-2 text-white/80"><span className="text-red-400 text-xl">✖️</span> 	Generic backgrounds, few customization options</li>
+                    <li className="flex items-center gap-2 text-white/80"><span className="text-yellow-400 text-xl">⚠️</span> One-size-fits-all generations</li>
+                    <li className="flex items-center gap-2 text-white/80"><span className="text-red-400 text-xl">✖️</span> No sense of social context or cultural references</li>
+                    <li className="flex items-center gap-2 text-white/80"><span className="text-orange-400 text-xl">😕</span> Not optimized for dating app or IG performance</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </section>
+
           {/* FAQ Section */}
-          <section id="faq" className="w-full py-16 px-4 flex flex-col items-center">
+          <section id="faq" className="w-full py-8 px-4 flex flex-col items-center mt-0">
             <h2 className="text-3xl font-bold mb-6">Frequently Asked Questions</h2>
             <p className="mb-12 text-lg text-white/80 max-w-xl text-center">Everything you need to know about FinstaCam and how it works</p>
             <div className="max-w-5xl w-full">
@@ -850,44 +933,41 @@ const Index = () => {
             </div>
           </section>
 
-          {/* How It Works Section */}
-          <section id="how-it-works" className="w-full py-16 px-4 flex flex-col items-center">
-            <h2 className="text-3xl font-bold mb-6">The FinstaCam Formula</h2>
-            <p className="mb-12 text-lg text-white/80 max-w-xl text-center">Low effort. High impact. Built for feeds, stories, and matches.</p>
-            <div className="flex flex-wrap gap-8 justify-center">
-              <div className="bg-white/10 rounded-2xl p-6 w-80 flex flex-col items-center group hover:bg-white/15 transition-all duration-300">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-400 to-blue-600 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <Palette className="text-white" size={24} />
-                </div>
-                <h4 className="font-semibold mb-2 text-lg">1. Pick the Vibe</h4>
-                <p className="text-white/80 text-sm text-center">Choose from curated scenes like the gym, club, vacation, or shopping district. Decide when and where you want to be seen, and we'll generate hyperrealistic AI selfies that place you right there.</p>
-              </div>
-              <div className="bg-white/10 rounded-2xl p-6 w-80 flex flex-col items-center group hover:bg-white/15 transition-all duration-300">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-r from-pink-400 to-pink-600 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <Scissors className="text-white" size={24} />
-                </div>
-                <h4 className="font-semibold mb-2 text-lg">2. Lock in Your Style</h4>
-                <p className="text-white/80 text-sm text-center">Upload your selfie and select a hairstyle inspo from our library. We will generate a custom AI look that eats on every platform.</p>
-              </div>
-              <div className="bg-white/10 rounded-2xl p-6 w-80 flex flex-col items-center group hover:bg-white/15 transition-all duration-300">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-r from-orange-400 to-red-600 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <Flame className="text-white" size={24} />
-                </div>
-                <h4 className="font-semibold mb-2 text-lg">3. Drop the Heat</h4>
-                <p className="text-white/80 text-sm text-center">Download, post, repeat. From Instagram to Hinge, your FinstaCam photos will do numbers while you do nothing.</p>
-              </div>
-            </div>
-          </section>
-
           {/* Pricing Section */}
           <section id="pricing" className="w-full py-16 px-4 flex flex-col items-center">
             <h2 className="text-3xl font-bold mb-2">Choose Your Plan</h2>
             <p className="mb-8 text-lg text-white/80 max-w-xl text-center">Transform your photos with our flexible pricing options</p>
+            
+            {/* Billing Toggle */}
+            <div className="flex items-center gap-4 mb-8 ml-16">
+              <span className={`text-lg font-medium transition-colors ${billingCycle === 'monthly' ? 'text-white' : 'text-white/60'}`}>Monthly</span>
+              <button
+                onClick={() => setBillingCycle(billingCycle === 'monthly' ? 'yearly' : 'monthly')}
+                className={`relative inline-flex h-8 w-16 items-center rounded-full transition-colors ${
+                  billingCycle === 'yearly' ? 'bg-gradient-to-r from-purple-400 via-pink-500 to-yellow-400' : 'bg-white/20'
+                }`}
+              >
+                <span
+                  className={`inline-block h-6 w-6 transform rounded-full bg-white transition-transform ${
+                    billingCycle === 'yearly' ? 'translate-x-9' : 'translate-x-1'
+                  }`}
+                />
+              </button>
+              <span className={`text-lg font-medium transition-colors ${billingCycle === 'yearly' ? 'text-white' : 'text-white/60'}`}>Yearly</span>
+              <div className="w-20 h-8 flex items-center justify-center">
+                {billingCycle === 'yearly' && (
+                  <span className="bg-green-500/20 text-green-400 px-2 py-3 rounded-full text-xs font-medium border border-green-400/30">
+                    Save 50%
+                  </span>
+                )}
+              </div>
+            </div>
+            
             <div className="flex flex-wrap gap-8 justify-center">
               {[
-                { title: "Lurker", price: "Free", features: ["2 free selfies", "6 scenes to choose from", "Hairstyling", "Payment method required"], cta: "Free", highlight: false },
-                { title: "Feed Fixer", price: "$12.99", features: ["15 selfies/month", "Lurker + Feed Fixer scenes", "2 group photos", "Hairstyling, Height and Weight", "1 Photo dump per month", "Buy Scene Packs with credits"], cta: "Choose", highlight: true },
-                { title: "Profile Optimizer", price: "$24.99", features: [
+                { title: "Lurker", price: billingCycle === 'monthly' ? "Free" : "Free", features: ["2 free selfies", "6 scenes to choose from", "Hairstyling", "Payment method required"], cta: "Free", highlight: false },
+                { title: "Feed Fixer", price: billingCycle === 'monthly' ? "$12.99" : "$79.99", features: ["15 selfies/month", "Lurker + Feed Fixer scenes", "2 group photos", "Hairstyling, Height and Weight", "1 Photo dump per month", "Buy Scene Packs with credits"], cta: "Choose", highlight: true },
+                { title: "Profile Optimizer", price: billingCycle === 'monthly' ? "$24.99" : "$159.99", features: [
                   "20 selfies/month", 
                   "10 Boomerangs", 
                   "Lower tier scenes +\nProfile Optimizer scenes",
@@ -897,14 +977,14 @@ const Index = () => {
                   "Weekly scene packs\n(e.g., Ibiza, NYFW, Tokyo Nightlife)",
                   "Buy Scene Packs with credits"
                 ], cta: "Choose", highlight: false },
-                { title: "Content Creator", price: "$39.99", features: [
+                { title: "Content Creator", price: billingCycle === 'monthly' ? "$39.99" : "$249.99", features: [
                   "40 selfies/month", 
                   "20 Boomerangs", 
                   "All Scenes +\nAI-Custom Scenes (User-Generated)",
                   "15 group photos", 
                   "Full range styling", 
                   "2 Photo dumps per month", 
-                  "Weekly scene packs\n(Full access including seasonal & city-based drops)",
+                  "Weekly scene packs\n(Full access including seasonal & Location-based drops)",
                   "Buy Scene Packs with credits"
                 ], cta: "Choose", highlight: false },
               ].map((plan, i) => (

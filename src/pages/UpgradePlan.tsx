@@ -17,6 +17,9 @@ const UpgradePlan = () => {
     price: string;
   } | null>(null);
   
+  // Billing cycle state
+  const [billingCycle, setBillingCycle] = useState('monthly');
+  
   // Mock current user plan - this should come from your user context/state management
   const currentUserPlan = "feed-fixer"; // lurker, feed-fixer, profile-optimizer, or content-creator
 
@@ -24,7 +27,7 @@ const UpgradePlan = () => {
     {
       id: "lurker",
       name: "Lurker",
-      price: "Free",
+      price: billingCycle === 'monthly' ? "Free" : "Free",
       description: "Perfect for getting started",
       features: [
         "2 selfies per month",
@@ -37,7 +40,7 @@ const UpgradePlan = () => {
     {
       id: "feed-fixer",
       name: "Feed Fixer",
-      price: "12.99",
+      price: billingCycle === 'monthly' ? "12.99" : "79.99",
       description: "Most popular for creators",
       features: [
         "15 selfies/month",
@@ -52,7 +55,7 @@ const UpgradePlan = () => {
     {
       id: "profile-optimizer",
       name: "Profile Optimizer",
-      price: "24.99",
+      price: billingCycle === 'monthly' ? "24.99" : "159.99",
       description: "For serious content creators",
       features: [
         "20 selfies/month",
@@ -69,7 +72,7 @@ const UpgradePlan = () => {
     {
       id: "content-creator",
       name: "Content Creator",
-      price: "39.99",
+      price: billingCycle === 'monthly' ? "39.99" : "249.99",
       description: "For professional influencers",
       features: [
         "40 selfies/month",
@@ -137,6 +140,31 @@ const UpgradePlan = () => {
 
       {/* Main Content */}
       <div className="w-full px-8 py-12">
+        {/* Billing Toggle */}
+        <div className="flex items-center justify-center gap-4 mb-8">
+          <span className={`text-lg font-medium transition-colors ${billingCycle === 'monthly' ? 'text-white' : 'text-white/60'}`}>Monthly</span>
+          <button
+            onClick={() => setBillingCycle(billingCycle === 'monthly' ? 'yearly' : 'monthly')}
+            className={`relative inline-flex h-8 w-16 items-center rounded-full transition-colors ${
+              billingCycle === 'yearly' ? 'bg-gradient-to-r from-purple-400 via-pink-500 to-yellow-400' : 'bg-white/20'
+            }`}
+          >
+            <span
+              className={`inline-block h-6 w-6 transform rounded-full bg-white transition-transform ${
+                billingCycle === 'yearly' ? 'translate-x-9' : 'translate-x-1'
+              }`}
+            />
+          </button>
+          <span className={`text-lg font-medium transition-colors ${billingCycle === 'yearly' ? 'text-white' : 'text-white/60'}`}>Yearly</span>
+          <div className="w-20 h-8 flex items-center justify-center">
+            {billingCycle === 'yearly' && (
+              <span className="bg-green-500/20 text-green-400 px-2 py-3 rounded-full text-xs font-medium border border-green-400/30">
+                Save 50%
+              </span>
+            )}
+          </div>
+        </div>
+        
         <div className="flex justify-center gap-6">
           {plans.map((plan) => {
             const isCurrentPlan = currentUserPlan === plan.id;
