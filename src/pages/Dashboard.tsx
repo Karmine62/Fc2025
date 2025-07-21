@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Camera, ShoppingBag, Plus, Heart, Search, Bot, Download, QrCode, Store, Trash, Eye, Share, CreditCard, User, Palette, Sparkles, Zap, Crown, Album, Package } from "lucide-react";
+import { Camera, ShoppingBag, Plus, Heart, Search, Bot, Download, QrCode, Store, Trash, Eye, Share, CreditCard, User, Palette, Sparkles, Zap, Crown, Album, Package, Loader2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -12,8 +12,12 @@ import { useUser } from "@/contexts/UserContext";
 import QRCode from 'react-qr-code';
 import { io, Socket } from 'socket.io-client';
 
+// Use production URLs for HTTPS camera access
 const MOBILE_URL = 'https://fc2025.onrender.com/mobile';
-const SOCKET_URL = 'https://fc2025.onrender.com';
+const SOCKET_URL = import.meta.env.VITE_BACKEND_URL || 'https://fc2025.onrender.com';
+
+// Option to disable socket connection for debugging
+const DISABLE_SOCKET = false; // Set to true to disable socket connection
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -57,6 +61,13 @@ const Dashboard = () => {
   const [qrConnectionStatus, setQrConnectionStatus] = useState<'disconnected' | 'connected' | 'connecting'>('connecting');
   const [qrImages, setQrImages] = useState<Array<{ id: string; imageData: string; timestamp: string }>>([]);
   const [socketInstance, setSocketInstance] = useState<Socket | null>(null);
+
+  // Image generation state
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [generatedImages, setGeneratedImages] = useState<Array<{ id: string; imageUrl: string; sceneName: string; timestamp: string }>>([]);
+  const [generationError, setGenerationError] = useState<string | null>(null);
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const [hasNewContent, setHasNewContent] = useState(false);
 
   // Check if user just completed onboarding
   const isNewUser = email && isOnboardingComplete;
@@ -311,102 +322,102 @@ const Dashboard = () => {
   // All scenes data (100 total scenes)
   const allScenes = [
     // Slide 1 (Scenes 1-12)
-    { id: 1, name: 'Library', emoji: '📸', description: 'A2,D2 on google sheet/LURKER' },
+    { id: 1, name: 'Library', emoji: '📚', description: 'A2,D2 on google sheet/LURKER' },
     { id: 2, name: 'Gym', emoji: '💪', description: 'A3,D3 on google sheet/LURKER' },
-    { id: 3, name: 'Bar Bathroom', emoji: '🕺', description: 'A4,D4 on google sheet/LURKER' },
-    { id: 4, name: 'College Dorm', emoji: '🏖️', description: 'A5,D5 on google sheet/LURKER' },
-    { id: 5, name: 'Shopping Mall', emoji: '💼', description: 'A6,D6 on google sheet/LURKER' },
-    { id: 6, name: 'Bedroom', emoji: '☕', description: 'A7,D7 on google sheet/LURKER' },
-    { id: 7, name: 'Carnival', emoji: '🌳', description: 'A8,D8 on google sheet/FF' },
-    { id: 8, name: 'Frat Party', emoji: '🏢', description: 'A9,D9 on google sheet/FF' },
-    { id: 9, name: 'Gas Station', emoji: '🍸', description: 'A10,D10 on google sheet/FF' },
-    { id: 10, name: 'Inside Car', emoji: '🍽️', description: 'A11,D11 on google sheet/FF' },
-    { id: 11, name: 'Nightclub', emoji: '📚', description: 'A12,D12 on google sheet/FF' },
-    { id: 12, name: 'Hiking', emoji: '🏛️', description: 'A13,D13 on google sheet/FF' },
+    { id: 3, name: 'Bar Bathroom', emoji: '🚹', description: 'A4,D4 on google sheet/LURKER' },
+    { id: 4, name: 'College Dorm', emoji: '🏫', description: 'A5,D5 on google sheet/LURKER' },
+    { id: 5, name: 'Shopping Mall', emoji: '🛍️', description: 'A6,D6 on google sheet/LURKER' },
+    { id: 6, name: 'Bedroom', emoji: '🛏️', description: 'A7,D7 on google sheet/LURKER' },
+    { id: 7, name: 'Carnival', emoji: '🎡', description: 'A8,D8 on google sheet/FF' },
+    { id: 8, name: 'Frat Party', emoji: '🍻', description: 'A9,D9 on google sheet/FF' },
+    { id: 9, name: 'Gas Station', emoji: '⛽', description: 'A10,D10 on google sheet/FF' },
+    { id: 10, name: 'Inside Car', emoji: '🚗', description: 'A11,D11 on google sheet/FF' },
+    { id: 11, name: 'Nightclub', emoji: '🕺', description: 'A12,D12 on google sheet/FF' },
+    { id: 12, name: 'Hiking Trail', emoji: '🏔️', description: 'A13,D13 on google sheet/FF' },
 
     // Slide 2 (Scenes 13-24)
-    { id: 13, name: 'Off Roading', emoji: '✈️', description: 'A14,D14 on google sheet/FF' },
-    { id: 14, name: 'Gym Working Out', emoji: '🏨', description: 'A15,D15 on google sheet/FF' },
-    { id: 15, name: 'Condo Balcony', emoji: '🏊', description: 'A16,D16 on google sheet/FF' },
-    { id: 16, name: 'Vacation Airbnb', emoji: '🧖', description: 'A17,D17 on google sheet/FF' },
-    { id: 17, name: 'Dog Park', emoji: '🧘', description: 'A18,D18 on google sheet/FF' },
-    { id: 18, name: 'Ski Resort', emoji: '🎾', description: 'A19,D19 on google sheet/FF' },
-    { id: 19, name: 'Firework Show', emoji: '⛳', description: 'A20,D20 on google sheet/FF' },
-    { id: 20, name: 'Airbnb Party', emoji: '🏀', description: 'A21,D21 on google sheet/FF' },
-    { id: 21, name: 'NYC Corner Store', emoji: '⚽', description: 'A22,D22 on google sheet/FF' }, 
-    { id: 22, name: 'Airport Terminal', emoji: '🥊', description: 'A23,D23 on google sheet/FF' },
-    { id: 23, name: 'Beach Bonfire', emoji: '🧗', description: 'A24,D24 on google sheet/FF' },
-    { id: 24, name: 'Sneaker Store', emoji: '🏄', description: 'A25,D25 on google sheet/FF' },
+    { id: 13, name: 'Off Roading', emoji: '🏍️', description: 'A14,D14 on google sheet/FF' },
+    { id: 14, name: 'Working Out', emoji: '🏋️', description: 'A15,D15 on google sheet/FF' },
+    { id: 15, name: 'Condo Balcony', emoji: '🏢', description: 'A16,D16 on google sheet/FF' },
+    { id: 16, name: 'Vacation Airbnb', emoji: '🏰', description: 'A17,D17 on google sheet/FF' },
+    { id: 17, name: 'Dog Park', emoji: '🐕', description: 'A18,D18 on google sheet/FF' },
+    { id: 18, name: 'Ski Resort', emoji: '⛷️', description: 'A19,D19 on google sheet/FF' },
+    { id: 19, name: 'Firework Show', emoji: '🎆', description: 'A20,D20 on google sheet/FF' },
+    { id: 20, name: 'Airbnb Party', emoji: '✈️', description: 'A21,D21 on google sheet/FF' },
+    { id: 21, name: 'NYC Corner Store', emoji: '🏪', description: 'A22,D22 on google sheet/FF' }, 
+    { id: 22, name: 'Airport Terminal', emoji: '✈️', description: 'A23,D23 on google sheet/FF' },
+    { id: 23, name: 'Beach Bonfire', emoji: '🔥', description: 'A24,D24 on google sheet/FF' },
+    { id: 24, name: 'Sneaker Store', emoji: '👟', description: 'A25,D25 on google sheet/FF' },
 
     // Slide 3 (Scenes 25-36)
-    { id: 25, name: 'City Walk', emoji: '⛷️', description: 'A26,D26 on google sheet/FF' },
-    { id: 26, name: 'Group Brunch Selfie', emoji: '🏂', description: 'A27,D27 on google sheet/FF' },
-    { id: 27, name: 'Rooftop  Pool', emoji: '🥾', description: 'A28,D28 on google sheet/FF' },
-    { id: 28, name: 'Highrise Condo', emoji: '⛺', description: 'A29,D29 on google sheet/FF' },
-    { id: 29, name: 'Equinox Gym', emoji: '🎣', description: 'A30,D30 on google sheet/FF' },
-    { id: 30, name: 'Rooftop Dinner', emoji: '🚤', description: 'A31,D31 on google sheet/FF' },
-    { id: 31, name: 'Beach Selfie', emoji: '⛵', description: 'A32,D32 on google sheet/FF' },
-    { id: 32, name: 'Smoking at a Party', emoji: '🤿', description: 'A33,D33 on google sheet/FF' },
-    { id: 33, name: 'Coffee Shop', emoji: '🪂', description: 'A34,D34 on google sheet/FF' },
-    { id: 34, name: 'Sports Bar', emoji: '🪂', description: 'A35,D35 on google sheet/FF' },
-    { id: 35, name: 'Food Court', emoji: '🦘', description: 'A36,D36 on google sheet/FF' },
-    { id: 36, name: 'Concert Venue', emoji: '🦅', description: 'A37,D37 on google sheet/FF' },
+    { id: 25, name: 'City Walk', emoji: '🚶', description: 'A26,D26 on google sheet/FF' },
+    { id: 26, name: 'Group Brunch', emoji: '🍳', description: 'A27,D27 on google sheet/FF' },
+    { id: 27, name: 'Rooftop  Pool', emoji: '🏊', description: 'A28,D28 on google sheet/FF' },
+    { id: 28, name: 'Highrise Condo', emoji: '🏙️', description: 'A29,D29 on google sheet/FF' },
+    { id: 29, name: 'Equinox Gym', emoji: '🏋️‍♂️', description: 'A30,D30 on google sheet/FF' },
+    { id: 30, name: 'Rooftop Dinner', emoji: '🍽️', description: 'A31,D31 on google sheet/FF' },
+    { id: 31, name: 'Beach Selfie', emoji: '🏖️', description: 'A32,D32 on google sheet/FF' },
+    { id: 32, name: 'Smoking at Party', emoji: '🚬', description: 'A33,D33 on google sheet/FF' },
+    { id: 33, name: 'Coffee Shop', emoji: '☕', description: 'A34,D34 on google sheet/FF' },
+    { id: 34, name: 'Sports Bar', emoji: '🏈', description: 'A35,D35 on google sheet/FF' },
+    { id: 35, name: 'Mall Food Court', emoji: '🌭', description: 'A36,D36 on google sheet/FF' },
+    { id: 36, name: 'Concert Venue', emoji: '🎵', description: 'A37,D37 on google sheet/FF' },
 
     // Slide 4 (Scenes 37-48)
-    { id: 37, name: 'City Patio', emoji: '🏍️', description: 'A38,D38 on google sheet/PO' },
-    { id: 38, name: 'On a Yacht', emoji: '🏎️', description: 'A39,D39 on google sheet/PO' },
-    { id: 39, name: 'Europe Scenery', emoji: '🚗', description: 'A40,D40 on google sheet/PO' },
-    { id: 40, name: 'Christ The Redeemer', emoji: '🚁', description: 'A41,D41 on google sheet/PO' },
-    { id: 41, name: 'With The Boys', emoji: '✈️', description: 'A42,D42 on google sheet/PO' },
-    { id: 42, name: 'Central Park', emoji: '🛥️', description: 'A43,D43 on google sheet/PO' },
-    { id: 43, name: 'Hotal Balcony', emoji: '🏠', description: 'A44,D44 on google sheet/PO' },
-    { id: 44, name: 'Designer District', emoji: '🏰', description: 'A45,D45 on google sheet/PO' },
-    { id: 45, name: 'BBQ Cook Out', emoji: '🏰', description: 'A46,D46 on google sheet/PO' },
-    { id: 46, name: 'Fitting Room', emoji: '🏡', description: 'A47,D47 on google sheet/PO' },
-    { id: 47, name: 'Food Festival', emoji: '🏕️', description: 'A48,D48 on google sheet/PO' },
-    { id: 48, name: 'Airport Bathroom', emoji: '🌳', description: 'A49,D49 on google sheet/PO' },
+    { id: 37, name: 'City Patio', emoji: '🌆', description: 'A38,D38 on google sheet/PO' },
+    { id: 38, name: 'On a Yacht', emoji: '🛥️', description: 'A39,D39 on google sheet/PO' },
+    { id: 39, name: 'Europe Scenery', emoji: '⛲', description: 'A40,D40 on google sheet/PO' },
+    { id: 40, name: 'Wonder Of The World', emoji: '🗽', description: 'A41,D41 on google sheet/PO' },
+    { id: 41, name: 'With The Boys', emoji: '👥', description: 'A42,D42 on google sheet/PO' },
+    { id: 42, name: 'Central Park', emoji: '🌳', description: 'A43,D43 on google sheet/PO' },
+    { id: 43, name: 'Hotel Balcony', emoji: '🏨', description: 'A44,D44 on google sheet/PO' },
+    { id: 44, name: 'Designer District', emoji: '👔', description: 'A45,D45 on google sheet/PO' },
+    { id: 45, name: 'BBQ Cook Out', emoji: '🍖', description: 'A46,D46 on google sheet/PO' },
+    { id: 46, name: 'Fitting Room', emoji: '👕', description: 'A47,D47 on google sheet/PO' },
+    { id: 47, name: 'Food Festival', emoji: '🍧', description: 'A48,D48 on google sheet/PO' },
+    { id: 48, name: 'Airport Bathroom', emoji: '🚽', description: 'A49,D49 on google sheet/PO' },
 
     // Slide 5 (Scenes 49-60)
-    { id: 49, name: 'Condo Mirror Selfie', emoji: '🎨', description: 'A50,D50 on google sheet/CC' },
-    { id: 50, name: 'Luxury Resturant', emoji: '🎭', description: 'A51,D51 on google sheet/CC' },
-    { id: 51, name: 'Soccer Training', emoji: '🎪', description: 'A52,D52 on google sheet/CC' },
-    { id: 52, name: 'Basketball Training', emoji: '🎷', description: 'A53,D53 on google sheet/CC' },
-    { id: 53, name: 'Strip Club', emoji: '🎸', description: 'A54,D54 on google sheet/CC' },
-    { id: 54, name: 'Private Jet', emoji: '🎪', description: 'A55,D55 on google sheet/CC' },
-    { id: 55, name: 'Golf Course', emoji: '💒', description: 'A56,D56 on google sheet/CC' },
-    { id: 56, name: 'On Jetski', emoji: '🎂', description: 'A57,D57 on google sheet/CC' },
-    { id: 57, name: 'Art Gallery', emoji: '🎓', description: 'A58,D58 on google sheet/PO' },
-    { id: 58, name: 'Museum', emoji: '🏆', description: 'A59,D59 on google sheet/PO' },
-    { id: 59, name: 'Delta Flight', emoji: '📰', description: 'A60,D60 on google sheet/PO' },
+    { id: 49, name: 'Condo Mirror Selfie', emoji: '🪞', description: 'A50,D50 on google sheet/CC' },
+    { id: 50, name: 'Luxury Resturant', emoji: '🍷', description: 'A51,D51 on google sheet/CC' },
+    { id: 51, name: 'Soccer Training', emoji: '⚽', description: 'A52,D52 on google sheet/CC' },
+    { id: 52, name: 'Basketball Training', emoji: '🏀', description: 'A53,D53 on google sheet/CC' },
+    { id: 53, name: 'Strip Club', emoji: '💃', description: 'A54,D54 on google sheet/CC' },
+    { id: 54, name: 'Private Jet', emoji: '🛫', description: 'A55,D55 on google sheet/CC' },
+    { id: 55, name: 'Golf Course', emoji: '⛳', description: 'A56,D56 on google sheet/CC' },
+    { id: 56, name: 'On Jetski', emoji: '🚤', description: 'A57,D57 on google sheet/CC' },
+    { id: 57, name: 'Art Gallery', emoji: '🖼️', description: 'A58,D58 on google sheet/PO' },
+    { id: 58, name: 'Museum', emoji: '🏛️', description: 'A59,D59 on google sheet/PO' },
+    { id: 59, name: 'Delta Flight', emoji: '💺', description: 'A60,D60 on google sheet/PO' },
     { id: 60, name: 'xxxx', emoji: '🎤', description: 'A61,D61 on google sheet/PO' },
 
     // Slide 6 (Scenes 61-72)
-    { id: 61, name: 'Movie Theater', emoji: '📷', description: 'A62,D62 on google sheet/PO' },
-    { id: 62, name: 'Lecture Hall', emoji: '👗', description: 'A63,D63 on google sheet/PO' },
-    { id: 63, name: 'Clothing Store', emoji: '💃', description: 'A64,D64 on google sheet/PO' },
-    { id: 64, name: 'Parking lot ', emoji: '🎬', description: 'A65,D65 on google sheet/PO' },
-    { id: 65, name: 'Street Art Mural', emoji: '💃', description: 'A66,D66 on google sheet/PO' },
-    { id: 66, name: 'Fast Food Store', emoji: '🎤', description: 'A67,D67 on google sheet/PO' },
-    { id: 67, name: 'Riding in Uber', emoji: '🎨', description: 'A68,D68 on google sheet/PO' },
-    { id: 68, name: 'Apartment Kitchen', emoji: '🗿', description: 'A69,D69 on google sheet/PO' },
-    { id: 69, name: 'Gym Progress', emoji: '🏺', description: 'A70,D70 on google sheet/PO' },
-    { id: 70, name: 'Luxury Hotel', emoji: '🪵', description: 'A71,D71 on google sheet/CC' },
-    { id: 71, name: 'Cliff Side View', emoji: '👨‍🍳', description: 'A72,D72 on google sheet/CC' },
-    { id: 72, name: 'Helicopter Ride', emoji: '🍰', description: 'A73,D73 on google sheet/CC' },
+    { id: 61, name: 'Movie Theater', emoji: '🎬', description: 'A62,D62 on google sheet/PO' },
+    { id: 62, name: 'Lecture Hall', emoji: '👨‍🏫', description: 'A63,D63 on google sheet/PO' },
+    { id: 63, name: 'Clothing Store', emoji: '🛒', description: 'A64,D64 on google sheet/PO' },
+    { id: 64, name: 'Parking lot ', emoji: '🅿️', description: 'A65,D65 on google sheet/PO' },
+    { id: 65, name: 'Street Art Mural', emoji: '🎨', description: 'A66,D66 on google sheet/PO' },
+    { id: 66, name: 'Fast Food Store', emoji: '🍔', description: 'A67,D67 on google sheet/PO' },
+    { id: 67, name: 'Riding in Uber', emoji: '🚕', description: 'A68,D68 on google sheet/PO' },
+    { id: 68, name: 'Apartment Kitchen', emoji: '🧑‍🍳', description: 'A69,D69 on google sheet/PO' },
+    { id: 69, name: 'Gym Progress', emoji: '🧍‍♂️', description: 'A70,D70 on google sheet/PO' },
+    { id: 70, name: 'Luxury Hotel', emoji: '🏩', description: 'A71,D71 on google sheet/CC' },
+    { id: 71, name: 'Cliff Side View', emoji: '⛰️', description: 'A72,D72 on google sheet/CC' },
+    { id: 72, name: 'Helicopter Ride', emoji: '🚁', description: 'A73,D73 on google sheet/CC' },
 
     // Slide 7 (Scenes 73-84)
-    { id: 73, name: 'Inside Luxury SUV', emoji: '🌱', description: 'A74,D74 on google sheet/CC' },
-    { id: 74, name: 'Hotel Bathroom', emoji: '🚜', description: 'A75,D75 on google sheet/CC' },
-    { id: 75, name: 'Ski Lodge Cabin', emoji: '🍇', description: 'A76,D76 on google sheet/PO' },
-    { id: 76, name: 'Vegas Casino', emoji: '🍎', description: 'A77,D77 on google sheet/CC' },
-    { id: 77, name: 'At Barbershop', emoji: '🌿', description: 'A78,D78 on google sheet/PO' },
-    { id: 78, name: 'Home Gym', emoji: '🌸', description: 'A79,D79 on google sheet/PO' },
-    { id: 79, name: 'MMA Gym', emoji: '🏜️', description: 'A80,D80 on google sheet/CC' },
-    { id: 80, name: 'On a Cruise', emoji: '⛰️', description: 'A81,D81 on google sheet/CC' },
-    { id: 81, name: 'Amusement Park', emoji: '🌋', description: 'A82,D82 on google sheet/PO' },
-    { id: 82, name: 'Hiking Peak', emoji: '🌊', description: 'A83,D83 on google sheet/CC' },
-    { id: 83, name: 'At Mosque', emoji: '🏞️', description: 'A84,D84 on google sheet/PO' },
-    { id: 84, name: 'Office Job', emoji: '🕳️', description: 'A85,D85 on google sheet/PO' },
+    { id: 73, name: 'Inside Luxury SUV', emoji: '🚙', description: 'A74,D74 on google sheet/CC' },
+    { id: 74, name: 'Hotel Bathroom', emoji: '🛁', description: 'A75,D75 on google sheet/CC' },
+    { id: 75, name: 'Ski Lodge Cabin', emoji: '🏠', description: 'A76,D76 on google sheet/PO' },
+    { id: 76, name: 'Vegas Casino', emoji: '🎰', description: 'A77,D77 on google sheet/CC' },
+    { id: 77, name: 'At Barbershop', emoji: '💈', description: 'A78,D78 on google sheet/PO' },
+    { id: 78, name: 'Home Gym', emoji: '🏋️‍♀️', description: 'A79,D79 on google sheet/PO' },
+    { id: 79, name: 'MMA Gym', emoji: '🥊', description: 'A80,D80 on google sheet/CC' },
+    { id: 80, name: 'On a Cruise', emoji: '🛳️', description: 'A81,D81 on google sheet/CC' },
+    { id: 81, name: 'Amusement Park', emoji: '🎢', description: 'A82,D82 on google sheet/PO' },
+    { id: 82, name: 'Hiking Peak', emoji: '🗻', description: 'A83,D83 on google sheet/CC' },
+    { id: 83, name: 'At Mosque', emoji: '🕌', description: 'A84,D84 on google sheet/PO' },
+    { id: 84, name: 'Office Job', emoji: '💻', description: 'A85,D85 on google sheet/PO' },
 
     // Slide 8 (Scenes 85-96)
     { id: 85, name: 'Space', emoji: '🚀', description: 'Cosmic adventure' },
@@ -598,30 +609,230 @@ const Dashboard = () => {
     }
   };
 
+  // Image generation functions
+  // Get the backend URL from environment or use default
+  const getBackendUrl = () => {
+    return import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
+  };
+
+  const getPromptFromSheet = async (sceneName: string, sceneDescription: string) => {
+    try {
+      const response = await fetch(`${getBackendUrl()}/api/get-prompt`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          sceneName,
+          sceneDescription
+        })
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        return data.prompt;
+      } else {
+        throw new Error(data.error || 'Failed to fetch prompt');
+      }
+    } catch (error) {
+      console.error('Error fetching prompt:', error);
+      throw error;
+    }
+  };
+
+  const generateImage = async (prompt: string, userImageData: string, sceneName: string) => {
+    try {
+      const response = await fetch(`${getBackendUrl()}/api/generate-image`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          prompt,
+          userImageData,
+          sceneName,
+          sceneDescription: getCurrentSlideScenes().find(scene => scene.name === sceneName)?.description
+        })
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        // Return the face-swapped URL from the new API response
+        return data.faceSwappedUrl || data.imageUrl; // Fallback to imageUrl for backward compatibility
+      } else {
+        throw new Error(data.error || 'Failed to generate image');
+      }
+    } catch (error) {
+      console.error('Error generating image:', error);
+      throw error;
+    }
+  };
+
+  const handleGenerateImage = async () => {
+    // Check if we have the required data
+    if (!selectedScene) {
+      alert('Please select a scene first');
+      return;
+    }
+
+    // Set loading state
+    setIsGenerating(true);
+    setGenerationError(null);
+
+    console.log('Starting image generation flow...');
+    console.log('Selected scene:', selectedScene);
+
+    try {
+      // Step 1: Get the scene description with coordinates
+      const currentScenes = getCurrentSlideScenes();
+      const selectedSceneData = currentScenes.find(scene => scene.name === selectedScene);
+      
+      if (!selectedSceneData) {
+        alert('Selected scene not found. Please try selecting a different scene.');
+        return;
+      }
+
+      console.log('Scene description:', selectedSceneData.description);
+
+      // Step 2: Fetch prompt from Google Sheets using the coordinates
+      console.log('Fetching prompt from Google Sheets...');
+      const prompt = await getPromptFromSheet(selectedScene, selectedSceneData.description);
+      console.log('Retrieved prompt from sheet:', prompt);
+
+      if (!prompt) {
+        alert('No prompt found for this scene. Please try a different scene.');
+        return;
+      }
+
+      // Step 3: Generate image with GPT-IMAGE-1 and perform face swap
+      console.log('Generating image with GPT-IMAGE-1 and performing face swap...');
+      
+      // Check if user has uploaded an image
+      if (!uploadedImageUrl) {
+        alert('Please upload a photo first before generating an image.');
+        return;
+      }
+      
+      // Convert uploaded image to base64 for the API
+      const userImageData = uploadedImageUrl; // This should already be a data URL
+      const imageUrl = await generateImage(prompt, userImageData, selectedScene);
+      console.log('Generated image URL:', imageUrl);
+
+      // Step 4: Add to generated images
+      const newImage = {
+        id: Date.now().toString(),
+        imageUrl,
+        sceneName: selectedScene,
+        timestamp: new Date().toISOString()
+      };
+
+      setGeneratedImages(prev => [newImage, ...prev]);
+      setHasNewContent(true);
+      
+      console.log('Image generation completed successfully!');
+      setShowSuccessPopup(true);
+      
+      // Auto-hide success popup after 3 seconds
+      setTimeout(() => {
+        setShowSuccessPopup(false);
+      }, 3000);
+      
+    } catch (error) {
+      console.error('Error in image generation:', error);
+      setGenerationError(error.message);
+      alert(`Error generating image: ${error.message}`);
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
   // Setup socket connection for QR tab
   useEffect(() => {
     if (uploadMethod !== 'qr') return;
+    
+    // Skip socket connection if disabled
+    if (DISABLE_SOCKET) {
+      console.log('Socket connection disabled for debugging');
+      setQrConnectionStatus('disconnected');
+      return;
+    }
+    
     setQrConnectionStatus('connecting');
-    const socket = io(SOCKET_URL, { transports: ['websocket'] });
+    
+    // Create socket with better error handling and fallback options
+    const socket = io(SOCKET_URL, { 
+      transports: ['websocket', 'polling'], // Allow fallback to polling
+      timeout: 10000, // 10 second timeout
+      forceNew: true, // Force new connection
+      reconnection: true, // Enable reconnection
+      reconnectionAttempts: 5, // Try 5 times
+      reconnectionDelay: 1000, // Wait 1 second between attempts
+    });
+    
     setSocketInstance(socket);
-    socket.emit('desktop-connect');
+    
+    // Connection event handlers
+    socket.on('connect', () => {
+      console.log('Socket connected successfully');
+      setQrConnectionStatus('connected');
+      socket.emit('desktop-connect');
+    });
+    
+    socket.on('connect_error', (error) => {
+      console.error('Socket connection error:', error);
+      setQrConnectionStatus('disconnected');
+    });
+    
+    socket.on('disconnect', (reason) => {
+      console.log('Socket disconnected:', reason);
+      setQrConnectionStatus('disconnected');
+    });
+    
+    socket.on('reconnect', (attemptNumber) => {
+      console.log('Socket reconnected after', attemptNumber, 'attempts');
+      setQrConnectionStatus('connected');
+      socket.emit('desktop-connect');
+    });
+    
+    socket.on('reconnect_error', (error) => {
+      console.error('Socket reconnection error:', error);
+      setQrConnectionStatus('disconnected');
+    });
+    
+    // Custom event handlers
     socket.on('connection-status', (data) => {
       setQrConnectionStatus(data.mobileConnected ? 'connected' : 'disconnected');
     });
-    socket.on('mobile-connected', () => setQrConnectionStatus('connected'));
-    socket.on('mobile-disconnected', () => setQrConnectionStatus('disconnected'));
+    
+    socket.on('mobile-connected', () => {
+      console.log('Mobile device connected');
+      setQrConnectionStatus('connected');
+    });
+    
+    socket.on('mobile-disconnected', () => {
+      console.log('Mobile device disconnected');
+      setQrConnectionStatus('disconnected');
+    });
+    
     socket.on('new-selfie', (data) => {
+      console.log('Received new selfie from mobile');
       setQrImages((prev) => [
         { id: data.id, imageData: data.imageData.imageData, timestamp: data.timestamp },
         ...prev
       ]);
     });
-    socket.on('disconnect', () => setQrConnectionStatus('disconnected'));
+    
+    // Cleanup function
     return () => {
-      socket.disconnect();
-      setSocketInstance(null);
+      console.log('Cleaning up socket connection');
+      if (socket) {
+        socket.disconnect();
+        setSocketInstance(null);
+      }
     };
   }, [uploadMethod]);
+
+  const [expandedImage, setExpandedImage] = useState<null | { imageUrl: string; sceneName: string }>(null);
 
   return (
     <div
@@ -634,6 +845,35 @@ const Dashboard = () => {
         backgroundAttachment: 'fixed',
       }}
     >
+      {/* Top-Right Loading Popup */}
+      {isGenerating && (
+        <div className="fixed top-8 right-8 z-50 backdrop-blur-md bg-white/5 border border-white/10 shadow-2xl rounded-2xl p-6 animate-in fade-in duration-300">
+          <div className="flex items-center gap-3">
+            <Loader2 className="w-6 h-6 text-white animate-spin" />
+            <div>
+              <h3 className="text-white font-semibold">Generating Image</h3>
+              <p className="text-white/70 text-sm">Please wait while we create your AI masterpiece...</p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Success Popup */}
+      {showSuccessPopup && (
+        <div className="fixed top-8 right-8 z-50 backdrop-blur-md bg-green-500/20 border border-green-400/30 shadow-2xl rounded-2xl p-6 animate-in fade-in duration-300">
+          <div className="flex items-center gap-3">
+            <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
+              <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <div>
+              <h3 className="text-white font-semibold">Image Generated!</h3>
+              <p className="text-white/70 text-sm">Your AI masterpiece is ready. Check the "My Content" tab!</p>
+            </div>
+          </div>
+        </div>
+      )}
       {/* Premium Sidebar */}
       <div className="fixed left-0 top-0 h-full w-80 backdrop-blur-md bg-white/5 border-r border-white/10 z-20 shadow-2xl">
         <div className="p-8">
@@ -850,9 +1090,15 @@ const Dashboard = () => {
               <TabsTrigger 
                 value="my-photos" 
                 className="flex items-center space-x-3 py-3 rounded-xl data-[state=active]:bg-white/10 data-[state=active]:backdrop-blur-md data-[state=active]:border data-[state=active]:border-white/20 data-[state=active]:shadow-md transition-all duration-200 relative z-10"
+                onClick={() => setHasNewContent(false)}
               >
                 <Camera className="w-5 h-5" />
                 <span className="font-medium">MY CONTENT</span>
+                {hasNewContent && (
+                  <div className="w-5 h-5 bg-red-500 rounded-full flex items-center justify-center text-white text-xs font-bold">
+                    1
+                  </div>
+                )}
               </TabsTrigger>
               <TabsTrigger 
                 value="store" 
@@ -1110,6 +1356,24 @@ const Dashboard = () => {
                         </div>
                       ) : (
                         <div className="border-2 border-dashed border-gray-300 rounded-2xl p-8 text-center bg-gradient-to-br from-purple-50/50 to-pink-50/50 flex flex-col items-center justify-center">
+                          {/* Connection Status Indicator */}
+                          <div className="mb-4 flex items-center justify-center gap-2">
+                            <div className={`w-3 h-3 rounded-full ${
+                              qrConnectionStatus === 'connected' ? 'bg-green-500' : 
+                              qrConnectionStatus === 'connecting' ? 'bg-yellow-500 animate-pulse' : 
+                              'bg-red-500'
+                            }`}></div>
+                            <span className={`text-sm font-medium ${
+                              qrConnectionStatus === 'connected' ? 'text-green-600' : 
+                              qrConnectionStatus === 'connecting' ? 'text-yellow-600' : 
+                              'text-red-600'
+                            }`}>
+                              {qrConnectionStatus === 'connected' ? 'Connected' : 
+                               qrConnectionStatus === 'connecting' ? 'Connecting...' : 
+                               'Disconnected'}
+                            </span>
+                          </div>
+                          
                           <div className="mb-4">
                             <QRCode value={MOBILE_URL} size={70} />
                           </div>
@@ -1171,51 +1435,108 @@ const Dashboard = () => {
                   </div>
 
                   {/* Generate Button */}
-                  <Button className="w-64 mx-auto bg-gradient-to-r from-yellow-400 via-orange-500 via-pink-500 to-purple-600 hover:from-purple-700 hover:to-pink-700 text-white border-0 rounded-2xl h-12 text-base font-semibold shadow-lg hover:shadow-xl transition-all duration-200 relative z-10">
-                    <Sparkles className="w-4 h-4 mr-2" />
-                    Generate Magic (5 Credits)
+                  <Button 
+                    onClick={handleGenerateImage}
+                    disabled={isGenerating}
+                    className="w-64 mx-auto bg-gradient-to-r from-yellow-400 via-orange-500 via-pink-500 to-purple-600 hover:from-purple-700 hover:to-pink-700 text-white border-0 rounded-2xl h-12 text-base font-semibold shadow-lg hover:shadow-xl transition-all duration-200 relative z-10 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isGenerating ? (
+                      <>
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                        Generating...
+                      </>
+                    ) : (
+                      <>
+                        <Sparkles className="w-4 h-4 mr-2" />
+                        Generate Magic (5 Credits)
+                      </>
+                    )}
                   </Button>
                 </div>
               </Card>
             </TabsContent>
 
             <TabsContent value="my-photos" className="mt-0">
-              {/* My Photos Grid - Instagram Reels style */}
-              <div className="grid grid-cols-3 gap-1 rounded-2xl overflow-hidden backdrop-blur-md bg-white/5 border border-white/10 shadow-2xl">
-                {mockPhotos.map((photo) => (
-                  <div key={photo.id} className="relative aspect-square group overflow-hidden bg-white">
+              {generatedImages.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {generatedImages.map((image) => (
+                    <Card 
+                      key={image.id} 
+                      className="backdrop-blur-md bg-white/5 border border-white/10 shadow-2xl rounded-2xl overflow-hidden group hover:shadow-3xl transition-all duration-300 hover:scale-105 hover:bg-white/10 hover:shadow-xl flex flex-col"
+                    >
+                      {/* Image */}
+                      <div className="relative aspect-square w-full overflow-hidden">
+                        <img
+                          src={image.imageUrl}
+                          alt={`Generated ${image.sceneName}`}
+                          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                        />
+                        {/* Scene name badge */}
+                        <div className="absolute top-2 left-2 bg-black/60 text-white text-xs px-2 py-1 rounded">
+                          {image.sceneName}
+                        </div>
+                      </div>
+                      {/* Action Buttons */}
+                      <div className="flex items-center justify-between gap-2 p-4">
+                        <Button
+                          size="icon"
+                          className="bg-white/20 backdrop-blur-md border border-white/30 text-white hover:bg-white/30 rounded-full w-10 h-10"
+                          onClick={() => setExpandedImage({ imageUrl: image.imageUrl, sceneName: image.sceneName })}
+                        >
+                          <Eye className="w-5 h-5" />
+                        </Button>
+                        <Button
+                          size="icon"
+                          className="bg-white/20 backdrop-blur-md border border-white/30 text-white hover:bg-white/30 rounded-full w-10 h-10"
+                          onClick={() => {
+                            const link = document.createElement('a');
+                            link.href = image.imageUrl;
+                            link.download = `finstacam-${image.sceneName}-${image.id}.jpg`;
+                            link.click();
+                          }}
+                        >
+                          <Download className="w-5 h-5" />
+                        </Button>
+                        <Button
+                          size="icon"
+                          className="bg-white/20 backdrop-blur-md border border-white/30 text-white hover:bg-white/30 rounded-full w-10 h-10"
+                          onClick={() => {
+                            setGeneratedImages(prev => prev.filter(img => img.id !== image.id));
+                          }}
+                        >
+                          <Trash className="w-5 h-5" />
+                        </Button>
+                      </div>
+                    </Card>
+                  ))}
+                </div>
+              ) : (
+                <div className="flex flex-col items-center justify-center py-12 text-white/70">
+                  <Sparkles className="w-16 h-16 mb-4 opacity-50" />
+                  <h3 className="text-xl font-semibold mb-2">No Generated Images Yet</h3>
+                  <p className="text-center max-w-md">
+                    Upload a photo, select a scene, and click "Generate Magic" to create your first AI-generated image!
+                  </p>
+                </div>
+              )}
+              {/* Expanded Image Modal */}
+              {expandedImage && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-lg" onClick={() => setExpandedImage(null)}>
+                  <div className="relative max-w-3xl w-full mx-4" onClick={e => e.stopPropagation()}>
                     <img
-                      src={photo.src}
-                      alt={`Photo ${photo.id}`}
-                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                      src={expandedImage.imageUrl}
+                      alt={`Expanded ${expandedImage.sceneName}`}
+                      className="w-full h-auto max-h-[80vh] rounded-2xl shadow-2xl border-4 border-white"
                     />
-                    {/* Hover overlay with glass effect */}
-                    <div className="absolute inset-0 bg-black/40 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center space-x-4 z-10">
-                      <Button
-                        size="icon"
-                        className="bg-white/20 backdrop-blur-md border border-white/30 text-white hover:bg-white/30 rounded-full w-12 h-12 relative z-20"
-                        onClick={() => console.log(`View photo ${photo.id}`)}
-                      >
-                        <Eye className="w-5 h-5" />
-                      </Button>
-                      <Button
-                        size="icon"
-                        className="bg-white/20 backdrop-blur-md border border-white/30 text-white hover:bg-white/30 rounded-full w-12 h-12 relative z-20"
-                        onClick={() => console.log(`Download photo ${photo.id}`)}
-                      >
-                        <Download className="w-5 h-5" />
-                      </Button>
-                      <Button
-                        size="icon"
-                        className="bg-white/20 backdrop-blur-md border border-white/30 text-white hover:bg-white/30 rounded-full w-12 h-12 relative z-20"
-                        onClick={() => console.log(`Delete photo ${photo.id}`)}
-                      >
-                        <Trash className="w-5 h-5" />
-                      </Button>
-                    </div>
+                    <button
+                      className="absolute top-2 right-2 bg-black/70 text-white rounded-full w-10 h-10 flex items-center justify-center text-2xl hover:bg-black/90 transition"
+                      onClick={() => setExpandedImage(null)}
+                    >
+                      ×
+                    </button>
                   </div>
-                ))}
-              </div>
+                </div>
+              )}
             </TabsContent>
 
             <TabsContent value="store" className="mt-0">
