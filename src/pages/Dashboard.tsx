@@ -650,15 +650,13 @@ const Dashboard = () => {
         body: JSON.stringify({
           prompt,
           userImageData,
-          sceneName,
-          sceneDescription: getCurrentSlideScenes().find(scene => scene.name === sceneName)?.description
+          sceneName
         })
       });
 
       const data = await response.json();
       if (data.success) {
-        // Return the face-swapped URL from the new API response
-        return data.faceSwappedUrl || data.imageUrl; // Fallback to imageUrl for backward compatibility
+        return data.imageUrl;
       } else {
         throw new Error(data.error || 'Failed to generate image');
       }
@@ -704,18 +702,10 @@ const Dashboard = () => {
         return;
       }
 
-      // Step 3: Generate image with GPT-IMAGE-1 and perform face swap
-      console.log('Generating image with GPT-IMAGE-1 and performing face swap...');
-      
-      // Check if user has uploaded an image
-      if (!uploadedImageUrl) {
-        alert('Please upload a photo first before generating an image.');
-        return;
-      }
-      
-      // Convert uploaded image to base64 for the API
-      const userImageData = uploadedImageUrl; // This should already be a data URL
-      const imageUrl = await generateImage(prompt, userImageData, selectedScene);
+      // Step 3: Generate image with GPT-IMAGE-1 (using a placeholder image for now)
+      console.log('Generating image with GPT-IMAGE-1...');
+      const placeholderImageUrl = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k='; // Simple placeholder
+      const imageUrl = await generateImage(prompt, placeholderImageUrl, selectedScene);
       console.log('Generated image URL:', imageUrl);
 
       // Step 4: Add to generated images
