@@ -4,19 +4,14 @@ import { Server } from 'socket.io';
 import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { writeFile, readFile } from 'node:fs/promises';
 import dotenv from 'dotenv';
 dotenv.config();
 
 // Google Sheets and OpenAI setup
 import { google } from 'googleapis';
 import OpenAI from 'openai';
-import Replicate from 'replicate';
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-const replicate = new Replicate({
-  auth: process.env.REPLICATE_API_TOKEN,
-});
 
 const sheets = google.sheets({ version: 'v4', auth: process.env.GOOGLE_SHEETS_API_KEY });
 const SHEET_ID = process.env.GOOGLE_SHEET_ID;
@@ -323,73 +318,6 @@ app.post('/api/generate-image', async (req, res) => {
   }
 });
 
-// Face swap endpoint
-app.post('/api/face-swap', async (req, res) => {
-  try {
-    const { generatedImageBase64, userFaceImageBase64 } = req.body;
-    
-    console.log('🔄 Face swap request received');
-    console.log('Generated image length:', generatedImageBase64 ? generatedImageBase64.length : 0);
-    console.log('User face image length:', userFaceImageBase64 ? userFaceImageBase64.length : 0);
-    
-    if (!generatedImageBase64 || !userFaceImageBase64) {
-      return res.status(400).json({
-        success: false,
-        error: 'Both generated image and user face image are required'
-      });
-    }
-    
-    // Perform face swap
-    const faceSwappedResult = await performFaceSwap(generatedImageBase64, userFaceImageBase64);
-    
-    res.json({
-      success: true,
-      faceSwappedImage: faceSwappedResult,
-      timestamp: new Date().toISOString()
-    });
-    
-  } catch (error) {
-    console.error('❌ Error in face-swap endpoint:', error);
-    res.status(500).json({
-      success: false,
-      error: error.message
-    });
-  }
-});
-
-// Test endpoint for face swap
-app.post('/api/test-face-swap', async (req, res) => {
-  try {
-    const { generatedImageBase64, userFaceImageBase64 } = req.body;
-    
-    console.log('🧪 Testing face swap functionality...');
-    
-    if (!generatedImageBase64 || !userFaceImageBase64) {
-      return res.status(400).json({
-        success: false,
-        error: 'Both generated image and user face image are required for testing'
-      });
-    }
-    
-    // Test the face swap function
-    const result = await performFaceSwap(generatedImageBase64, userFaceImageBase64);
-    
-    res.json({
-      success: true,
-      message: 'Face swap test completed successfully',
-      result: result,
-      timestamp: new Date().toISOString()
-    });
-    
-  } catch (error) {
-    console.error('❌ Error in test-face-swap endpoint:', error);
-    res.status(500).json({
-      success: false,
-      error: error.message
-    });
-  }
-});
-
 // Test endpoint for image generation
 app.post('/api/test-image-generation', async (req, res) => {
   try {
@@ -419,73 +347,6 @@ app.post('/api/test-image-generation', async (req, res) => {
     });
   }
 });
-
-// --- REPLICATE FACE SWAP INTEGRATION ---
-// Function to convert base64 to local file
-async function base64ToLocalFile(base64Data, filename) {
-  try {
-    // Remove data URL prefix if present
-    const base64String = base64Data.replace(/^data:image\/[a-z]+;base64,/, '');
-    
-    // Convert base64 to buffer
-    const buffer = Buffer.from(base64String, 'base64');
-    
-    // Write to temp directory
-    const tempPath = path.join(__dirname, 'temp', filename);
-    await writeFile(tempPath, buffer);
-    
-    console.log(`✅ File saved to: ${tempPath}`);
-    return tempPath;
-  } catch (error) {
-    console.error('❌ Error converting base64 to file:', error);
-    throw error;
-  }
-}
-
-// Function to perform face swap using Replicate
-async function performFaceSwap(generatedImageBase64, userFaceImageBase64) {
-  try {
-    console.log('🔄 Starting face swap process...');
-    
-    // Convert base64 images to local files
-    const generatedImagePath = await base64ToLocalFile(generatedImageBase64, `generated_${Date.now()}.png`);
-    const userFaceImagePath = await base64ToLocalFile(userFaceImageBase64, `user_${Date.now()}.png`);
-    
-    console.log('📁 Local files created:', { generatedImagePath, userFaceImagePath });
-    
-    // Read files for Replicate
-    const inputImage = await readFile(generatedImagePath);
-    const swapImage = await readFile(userFaceImagePath);
-    
-    console.log('📤 Sending to Replicate for face swap...');
-    
-    // Call Replicate face swap model
-    const output = await replicate.run(
-      "codeplugtech/face-swap:278a81e7ebb22db98bcba54de985d22cc1abeead2754eb1f2af717247be69b34",
-      {
-        input: {
-          input_image: inputImage,
-          swap_image: swapImage
-        }
-      }
-    );
-    
-    console.log('✅ Face swap completed:', output);
-    
-    // Clean up temp files
-    try {
-      await writeFile(generatedImagePath, ''); // Clear file
-      await writeFile(userFaceImagePath, ''); // Clear file
-    } catch (cleanupError) {
-      console.warn('⚠️ Could not clean up temp files:', cleanupError);
-    }
-    
-    return output;
-  } catch (error) {
-    console.error('❌ Error in face swap:', error);
-    throw error;
-  }
-}
 
 // Store connected devices
 const connectedDevices = new Map();
