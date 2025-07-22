@@ -666,6 +666,34 @@ const Dashboard = () => {
     }
   };
 
+  const performFaceSwap = async (generatedImageBase64: string, userFaceImageBase64: string) => {
+    try {
+      console.log('🔄 Calling face swap API...');
+      
+      const response = await fetch(`${getBackendUrl()}/api/face-swap`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          generatedImageBase64,
+          userFaceImageBase64
+        })
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        console.log('✅ Face swap completed successfully');
+        return data.faceSwappedImage;
+      } else {
+        throw new Error(data.error || 'Failed to perform face swap');
+      }
+    } catch (error) {
+      console.error('❌ Error in face swap:', error);
+      throw error;
+    }
+  };
+
   const handleGenerateImage = async () => {
     // Check if we have the required data
     if (!selectedScene) {
@@ -705,13 +733,35 @@ const Dashboard = () => {
       // Step 3: Generate image with GPT-IMAGE-1 (using a placeholder image for now)
       console.log('Generating image with GPT-IMAGE-1...');
       const placeholderImageUrl = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k='; // Simple placeholder
-      const imageUrl = await generateImage(prompt, placeholderImageUrl, selectedScene);
-      console.log('Generated image URL:', imageUrl);
+      const generatedImageUrl = await generateImage(prompt, placeholderImageUrl, selectedScene);
+      console.log('Generated image URL:', generatedImageUrl);
 
-      // Step 4: Add to generated images
+      // Step 4: Perform face swap (if user has uploaded an image)
+      let finalImageUrl = generatedImageUrl;
+      if (uploadedImageUrl) {
+        console.log('🔄 Performing face swap...');
+        try {
+          // Convert uploaded image to base64
+          const userFaceImageBase64 = uploadedImageUrl;
+          
+          // Convert generated image URL to base64 (if it's a data URL)
+          const generatedImageBase64 = generatedImageUrl.startsWith('data:') 
+            ? generatedImageUrl 
+            : generatedImageUrl; // For now, assume it's already base64
+          
+          const faceSwappedResult = await performFaceSwap(generatedImageBase64, userFaceImageBase64);
+          finalImageUrl = faceSwappedResult;
+          console.log('✅ Face swap completed successfully');
+        } catch (faceSwapError) {
+          console.warn('⚠️ Face swap failed, using original generated image:', faceSwapError);
+          // Continue with original image if face swap fails
+        }
+      }
+
+      // Step 5: Add to generated images
       const newImage = {
         id: Date.now().toString(),
-        imageUrl,
+        imageUrl: finalImageUrl,
         sceneName: selectedScene,
         timestamp: new Date().toISOString()
       };
